@@ -78,7 +78,7 @@ class ConnectionParams {
 class User {
     
     private static $CHECK = "SELECT * FROM users WHERE username='%s' OR email='%s' LIMIT 1";
-    private static $SIGNUP = "INSERT INTO users (username, email, password) VALUES('%s', '%s', '%s')";
+    private static $SIGNUP = "INSERT INTO users (username, email, password) VALUES ('%s', '%s', '%s')";
     private static $LOGIN = "SELECT * FROM users WHERE username='%s' LIMIT 1";
     
     private static $instance = null;
@@ -112,29 +112,26 @@ class User {
         
         $username = $this->db->escape_string($username);
         $email = $this->db->escape_string($email);
-        $password = $this->db->escape_string($password);
+        $password = md5($this->db->escape_string($password));
         
-        $user = $this->db->query(sprintf(self::$CHECK, $username, $email, $password))->fetch_assoc();
+        $user = $this->db->query(sprintf(self::$CHECK, $username, $email))->fetch_assoc();
         
         $err = new UserException("Can't create User");
         
         if ( $user ) {
             if ($user['username'] === $username) {
-                $err->push('username', "Username already exists");
+                $err->push('username', 'Username already exists');
             }
 
             if ($user['email'] === $email) {
-                $err->push('email', "Email already exists");
+                $err->push('email', 'Email already exists');
             }
         }
         
         if( $err->is_set() ) {
             throw $err;
         } else {
-            $stmt = $this->db->prepare(self::$SIGNUP);
-            $stmt->bind_param($username, $email, $password);
-            $stmt->close();
-            
+            $this->db->query(sprintf(self::$SIGNUP, $username, $email, $password));
             $logged = true;
         }
         
@@ -146,15 +143,15 @@ class User {
         $username = $this->db->escape_string($username);
         $password = md5($this->db->escape_string($password));
 
-        $user = $this->db->query(sprintf(self::$LOGIN, $username, $password))->fetch_assoc();
+        $user = $this->db->query(sprintf(self::$LOGIN, $username))->fetch_assoc();
         
         $err = new UserException("Can't login User");
         
         if( !$user ) {
-            $err->push('username', "No user with given name");
+            $err->push('username', 'No user with given name');
         } else {
             if ($user['password'] != $password) {
-                $err->push('password', "Wrong password");
+                $err->push('password', 'Wrong password');
             }
         }
         
