@@ -132,7 +132,7 @@ class User {
             throw $err;
         } else {
             $this->db->query(sprintf(self::$SIGNUP, $username, $email, $password));
-            $logged = true;
+            $this->logged = true;
         }
         
     }
@@ -158,18 +158,18 @@ class User {
         if( $err->is_set() ) {
             throw $err;
         } else {
-            $logged = true;
+            $this->logged = true;
         }
     }
     
     
     public function logout() {
-        $logged = false;
+        $this->logged = false;
     }
     
     
     public function is_logged() {
-        return $logged;
+        return $this->logged;
     }
     
 }

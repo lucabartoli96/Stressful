@@ -23,3 +23,7 @@ function login_form_foot() {
 function login_err($msg) {
     echo "<div class='alert alert-warning'>$msg</div>";
 }
+
+function topbar() {
+    include('topbar.php');
+}

@@ -11,9 +11,9 @@ $password = "";
 $err = null;
 
 if(isset($_POST['login'])) {
-    
     try {
         User::get()->login($_POST['username'], $_POST['password']);
+        $_SESSION['user'] = User::get();
         header("location: home.php");
     } catch ( UserException $err ) {
         //DO NOTHING

@@ -13,11 +13,11 @@ $err = null;
 if(isset($_POST['signup'])) {
     try {
         User::get()->signup($_POST['username'], $_POST['email'], $_POST['password']);
+        $_SESSION['user'] = User::get();
         header("location: home.php");
     } catch ( UserException $err ) {
         //DO NOTHING
     }
-    
 }
 
 ?>
