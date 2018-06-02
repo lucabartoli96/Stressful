@@ -2,7 +2,6 @@
     <div class="fluid-container">
         <nav class="navbar navbar-default">
             <div class="navbar-header">
-                <a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><i></i></a>
                 <img href="img/LOGO_orange.png" />
             </div>
             <div id="navbar" class="navbar-collapse collapse">
