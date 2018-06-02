@@ -9,7 +9,7 @@
                     <?php
                         $active = true;
                     
-                        foreach ( $list_a as $a ) {
+                        foreach ( $sections as $a ) {
                             echo "<li";
                             if ( $active ) {
                                 echo " class='active' ";

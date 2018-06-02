@@ -2,7 +2,7 @@
 require_once("/var/www/html/Stressful/resources/config.php");
 require_once(TEMPLATES_PATH . '/build.php');
 
-require_once('db.php');
+require_once('access.php');
 
 $username = "";
 $email = "";

@@ -1,6 +1,4 @@
 <?php
-require_once("/var/www/html/Stressful/resources/config.php");
-
 
 class UserException extends Exception {
     private $stack;
@@ -40,46 +38,11 @@ class UserException extends Exception {
     }
 }
 
-class ConnectionParams {
-    
-    private static $params = null;
-
-    public static function set() {
-
-        if(func_num_args() === 4) {
-
-            if(self::$params !== null) {
-                throw new Exception("Parameters can be set only once");
-            }
-
-            self::$params = array(
-                "hostname" => func_get_arg(0),
-                "username" => func_get_arg(1),
-                "password" => func_get_arg(2),
-                "database" => func_get_arg(3)           
-            );
-
-        } else {
-            return self::$params !== null;
-        }
-
-    }
-
-    public static function get($name) {
-        if (self::set()) {
-            return self::$params[$name];
-        } else {
-            throw new Exception('Parameters not set yet');
-        }
-    }
-
-}
-
 class User {
     
-    private static $CHECK = "SELECT * FROM users WHERE username='%s' OR email='%s' LIMIT 1";
-    private static $SIGNUP = "INSERT INTO users (username, email, password) VALUES ('%s', '%s', '%s')";
-    private static $LOGIN = "SELECT * FROM users WHERE username='%s' LIMIT 1";
+    private static $CHECK = "SELECT * FROM user WHERE username='%s' OR email='%s' LIMIT 1";
+    private static $SIGNUP = "INSERT INTO user (username, email, password) VALUES ('%s', '%s', '%s')";
+    private static $LOGIN = "SELECT * FROM user WHERE username='%s' LIMIT 1";
     
     private static $instance = null;
 
@@ -89,12 +52,7 @@ class User {
     private $logged = false;
     
     private function __construct() {
-        $this->db = new mysqli(
-            ConnectionParams::get("hostname"),
-            ConnectionParams::get("username"),
-            ConnectionParams::get("password"),
-            ConnectionParams::get("database")
-        );
+        $this->db = Connection::get();
     }
     
     public static function get() {
@@ -159,6 +117,7 @@ class User {
             throw $err;
         } else {
             $this->logged = true;
+            $this->admin = $user['admin'];
         }
     }
     
@@ -170,6 +129,10 @@ class User {
     
     public function is_logged() {
         return $this->logged;
+    }
+    
+    public function is_admin() {
+        return $this->admin;
     }
     
 }
