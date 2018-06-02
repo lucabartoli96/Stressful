@@ -25,5 +25,6 @@ function login_err($msg) {
 }
 
 function topbar() {
+    $list_a = func_get_args();
     include('topbar.php');
 }

@@ -6,9 +6,19 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="active"><a href="#" data-nav-section="home"><span>Home</span></a></li>
-                    <li><a href="#" data-nav-section="test"><span>Services</span></a></li>
-                    <li><a href="#" data-nav-section="profile"><span>Project</span></a></li>
+                    <?php
+                        $active = true;
+                    
+                        foreach ( $list_a as $a ) {
+                            echo "<li";
+                            if ( $active ) {
+                                echo " class='active' ";
+                                $active = false;
+                            }
+                            echo "><a data-nav-section='" . strtolower($a) ."'><span>$a</span></a></li>\n";
+                        }
+                    
+                    ?>
                     <li class="call-to-action"><a class="logout"><span>Log out</span></a></li>
                 </ul>
             </div>

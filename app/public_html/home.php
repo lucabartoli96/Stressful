@@ -4,6 +4,8 @@ require_once("/var/www/html/Stressful/resources/config.php");
 require_once(LIBRARY_PATH . '/user.php');
 require_once(TEMPLATES_PATH . '/build.php');
 
+session_start();
+
 $user = $_SESSION['user'];
 
 if ( !$user->is_logged() ) {
@@ -11,7 +13,7 @@ if ( !$user->is_logged() ) {
 }
 
 head(array('topbar'), array('topbar'));
-topbar();
+topbar('Home', 'Test', 'Profile');
 foot();
 
 ?>
