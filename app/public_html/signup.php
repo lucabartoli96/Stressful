@@ -1,8 +1,8 @@
 <?php 
 require_once("/var/www/html/Stressful/resources/config.php");
 require_once(TEMPLATES_PATH . '/build.php');
+require_once(LIBRARY_PATH . '/db.php');
 
-require_once('access.php');
 
 $username = "";
 $email = "";
@@ -13,7 +13,6 @@ $err = null;
 if(isset($_POST['signup'])) {
     try {
         User::get()->signup($_POST['username'], $_POST['email'], $_POST['password']);
-        $_SESSION['user'] = User::get();
         header("location: home.php");
     } catch ( UserException $err ) {
         //DO NOTHING

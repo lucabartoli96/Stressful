@@ -1,78 +1,69 @@
 <?php
 
-class UserException extends Exception {
-    private $stack;
-    
-    public function __construct($message) {
-        parent::__construct($message);
-        $this->stack = null;
-    }
-    
-    public function err($name) {
-        return isset($this->stack[$name]);
-    }
-    
-    public function push($name, $message) {
-        
-        if ( !$this->is_set() ) {
-            $this->stack = array();
-        }
-        
-        if ( !$this->err($name) ) {
-            $this->stack[$name] = array();
-        }
-        
-        array_push($this->stack[$name], $message);
-    }
-    
-    public function get($name) {
-        if ( $this->err($name) ) {
-            return $this->stack[$name];
-        } else {
-            return null;
-        }
-    }
-    
-    public function is_set() {
-        return $this->stack !== null;
-    }
-}
-
 class User {
     
+    private static $READ = "SELECT * FROM user WHERE username='%s' LIMIT 1";
     private static $CHECK = "SELECT * FROM user WHERE username='%s' OR email='%s' LIMIT 1";
     private static $SIGNUP = "INSERT INTO user (username, email, password) VALUES ('%s', '%s', '%s')";
     private static $LOGIN = "SELECT * FROM user WHERE username='%s' LIMIT 1";
     
-    private static $instance = null;
+    //private static $instance = null;
 
-    private $db = null;
     private $user = null;
-    private $admin = false;
     private $logged = false;
     
-    private function __construct() {
-        $this->db = Connection::get();
-    }
+    private function __construct() { }
     
     public static function get() {
         
-        if(self::$instance === null) {
-            self::$instance = new static();   
+        Session::start();
+        
+        if ( !isset($_SESSION[__CLASS__]) ) {
+            $_SESSION[__CLASS__] = new static();
         }
         
-        return self::$instance;
+        return $_SESSION[__CLASS__];
+        
     }
     
-    //TODO: add more controls!
+    private function update_user($username) {
+        $db = Connection::get();
+        $this->user = $db->query(sprintf(self::$READ, $username))->fetch_assoc();
+    }
+    
+    public function name() {
+        if($this->is_logged()) {
+            return $this->user['username'];
+        } else {
+            throw new UserException('User still unlogged');
+        }
+    }
+    
+    public function since() {
+        if($this->is_logged()) {
+            return $this->user['date'];
+        } else {
+            throw new UserException('User still unlogged');
+        }
+    }
+    
+    public function is_logged() {
+        return $this->user !== null;
+    }
+    
+    public function is_admin() {
+        return $this->user['admin'];
+    }
     
     public function signup($username, $email, $password) {
         
-        $username = $this->db->escape_string($username);
-        $email = $this->db->escape_string($email);
-        $password = md5($this->db->escape_string($password));
+        $db = Connection::get();
         
-        $user = $this->db->query(sprintf(self::$CHECK, $username, $email))->fetch_assoc();
+        $username = $db->escape_string($username);
+        $email = $db->escape_string($email);
+        $password = md5($db->escape_string($password));
+        
+        $user = $db->query(sprintf(self::$CHECK, $username, $email))->fetch_assoc();
         
         $err = new UserException("Can't create User");
         
@@ -89,8 +80,8 @@ class User {
         if( $err->is_set() ) {
             throw $err;
         } else {
-            $this->db->query(sprintf(self::$SIGNUP, $username, $email, $password));
-            $this->logged = true;
+            $db->query(sprintf(self::$SIGNUP, $username, $email, $password));
+            $this->update_user($username);
         }
         
     }
@@ -98,10 +89,12 @@ class User {
     
     public function login($username, $password) {
         
-        $username = $this->db->escape_string($username);
-        $password = md5($this->db->escape_string($password));
+        $db = Connection::get();
+        
+        $username = $db->escape_string($username);
+        $password = md5($db->escape_string($password));
 
-        $user = $this->db->query(sprintf(self::$LOGIN, $username))->fetch_assoc();
+        $user = $db->query(sprintf(self::$LOGIN, $username))->fetch_assoc();
         
         $err = new UserException("Can't login User");
         
@@ -117,7 +110,7 @@ class User {
             throw $err;
         } else {
             $this->logged = true;
-            $this->admin = $user['admin'];
+            $this->update_user($username);
         }
     }
     
@@ -126,14 +119,6 @@ class User {
         $this->logged = false;
     }
     
-    
-    public function is_logged() {
-        return $this->logged;
-    }
-    
-    public function is_admin() {
-        return $this->admin;
-    }
     
 }
 ?>

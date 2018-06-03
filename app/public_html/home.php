@@ -4,9 +4,8 @@ require_once("/var/www/html/Stressful/resources/config.php");
 require_once(LIBRARY_PATH . '/db.php');
 require_once(TEMPLATES_PATH . '/build.php');
 
-session_start();
-
-$user = $_SESSION['user'];
+Session::start();
+$user = User::get();
 
 if ( !$user->is_logged() ) {
     header('location: login.php');
