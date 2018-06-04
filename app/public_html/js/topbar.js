@@ -10,6 +10,9 @@
             $('.active').removeClass('active');
             $(this).closest('li').addClass('active');
             
+            var section = $(this).data('section');
+            $('.section').hide();
+            $('#' + section).show();
         });
 
 	}

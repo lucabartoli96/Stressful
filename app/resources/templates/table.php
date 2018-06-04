@@ -1,5 +1,3 @@
-<div id="<?php echo $id; ?>" class="limiter">
-		<div class="container-table">
 			<div class="wrap-table">
 				<div class="table">
 					<table>

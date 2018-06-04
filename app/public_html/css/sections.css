@@ -1,0 +1,20 @@
+.section {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.container-section {
+  width: 100%;
+  min-height: 100vh;
+  background: #d1d1d1;
+
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 33px 30px;
+}

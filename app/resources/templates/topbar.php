@@ -15,7 +15,7 @@
                                 echo " class='active' ";
                                 $active = false;
                             }
-                            echo "><a data-nav-section='" . strtolower($a) ."'><span>$a</span></a></li>\n";
+                            echo "><a data-section='" . strtolower($a) ."'><span>$a</span></a></li>\n";
                         }
                     
                     ?>

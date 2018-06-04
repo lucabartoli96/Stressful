@@ -37,6 +37,23 @@ function topbar() {
     include('topbar.php');
 }
 
-function table($id, $content) {
+function section_head($id, $display = false) {
+    echo "<div id='$id' class='section'";
+    if( !$display ) {
+        echo "style='display:none'";
+    }
+    echo '>';
+    echo '<div class="container-section">';
+}
+
+function section_foot() {
+    echo "</div> </div>";
+}
+
+function table($content) {
     include('table.php');
+}
+
+function profile($user) {
+    include('profile.php');
 }
