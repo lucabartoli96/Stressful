@@ -37,6 +37,6 @@ function topbar() {
     include('topbar.php');
 }
 
-function categories($categories) {
-    
+function table($id, $content) {
+    include('table.php');
 }

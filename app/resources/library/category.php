@@ -29,7 +29,12 @@ class Category {
     
     public function all() {
         $db = Connection::get();
-        return $db->query($ALL);
+        $result = $db->query(self::$ALL);
+        $converted = array();
+        while ( $row = $result->fetch_assoc() ) {
+            array_push($converted, $row);
+        }
+        return $converted;
     }
     
     public function add($name) {

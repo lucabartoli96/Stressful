@@ -11,8 +11,9 @@ if ( !$user->is_logged() ) {
     header('location: login.php');
 }
 
-head(array('topbar'), array('topbar'));
+head(array('topbar', 'table'), array('topbar', 'table'));
 topbar('Home', 'Test', 'Profile');
+table('home', Category::get()->all());
 foot();
 
 ?>
