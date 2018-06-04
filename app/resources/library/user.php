@@ -39,6 +39,14 @@ class User {
         }
     }
     
+    public function email() {
+        if($this->is_logged()) {
+            return $this->user['email'];
+        } else {
+            throw new UserException('User still unlogged');
+        }
+    }
+    
     public function since() {
         if($this->is_logged()) {
             return $this->user['date'];

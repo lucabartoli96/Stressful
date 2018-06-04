@@ -20,7 +20,7 @@ td {
   padding-left: 25px;
 }
 
-td.column1 {
+td.column1, th.column1 {
   width: 265px;
   padding-left: 42px;
 }
