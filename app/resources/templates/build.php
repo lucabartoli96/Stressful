@@ -12,7 +12,7 @@ function foot() {
 }
 
 function login_form_head($action) {
-    echo '<div class="fader"> <div class="form">' .
+    echo '<div class="form-container"> <div class="form">' .
         '<form method="POST" action="'.$action.'">';
 }
 
