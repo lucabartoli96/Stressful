@@ -23,7 +23,7 @@ if(isset($_POST['signup'])) {
 
 <?php 
 head(array('login'), array('index'));
-login_form_head($config['urls']['base'] . "/signup.php");
+login_form_head(PUBLIC_HTML_PATH . "/signup.php");
 ?>
 <input type="text" placeholder="username" name="username"/>
 <?php 

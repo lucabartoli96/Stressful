@@ -3,7 +3,8 @@
 class User {
     
     private static $READ = "SELECT * FROM user WHERE username='%s' LIMIT 1";
-    private static $CHECK = "SELECT * FROM user WHERE username='%s' OR email='%s' LIMIT 1";
+    private static $CHECK = "SELECT * FROM user WHERE %s='%s' LIMIT 1";
+    private static $UPDATE = "UPDATE user SET %s='%s' WHERE %s='%s' LIMIT 1";
     private static $SIGNUP = "INSERT INTO user (username, email, password) VALUES ('%s', '%s', '%s')";
     private static $LOGIN = "SELECT * FROM user WHERE username='%s' LIMIT 1";
     
@@ -67,22 +68,22 @@ class User {
         
         $db = Connection::get();
         
-        $username = $db->escape_string($username);
-        $email = $db->escape_string($email);
-        $password = md5($db->escape_string($password));
-        
-        $user = $db->query(sprintf(self::$CHECK, $username, $email))->fetch_assoc();
+        $username = $db->real_escape_string($username);
+        $email = $db->real_escape_string($email);
+        $password = md5($db->real_escape_string($password));
         
         $err = new UserException("Can't create User");
         
+        $user = $db->query(sprintf(self::$CHECK, 'username', $username))->fetch_assoc();
+        
         if ( $user ) {
-            if ($user['username'] === $username) {
-                $err->push('username', 'Username already exists');
-            }
-
-            if ($user['email'] === $email) {
-                $err->push('email', 'Email already exists');
-            }
+            $err->push('username', 'Username already exists');
+        }
+        
+        $user = $db->query(sprintf(self::$CHECK, 'email', $email))->fetch_assoc();
+        
+        if ( $user ) {
+            $err->push('email', 'Email already exists');
         }
         
         if( $err->is_set() ) {
@@ -99,8 +100,8 @@ class User {
         
         $db = Connection::get();
         
-        $username = $db->escape_string($username);
-        $password = md5($db->escape_string($password));
+        $username = $db->real_escape_string($username);
+        $password = md5($db->real_escape_string($password));
 
         $user = $db->query(sprintf(self::$LOGIN, $username))->fetch_assoc();
         
@@ -118,6 +119,55 @@ class User {
             throw $err;
         } else {
             $this->logged = true;
+            $this->update_user($username);
+        }
+    }
+    
+    
+    public function change($username, $email, $password=null) {
+        
+        $db = Connection::get();
+        
+        $err = new UserException("Can't change User info");
+        
+        $username = $db->escape_string($username);
+        
+        if ( $username !== $this->user['username'] ) {
+            $user = $db->query(sprintf(self::$CHECK, 'username', $username))->fetch_assoc();
+            if ( $user ) {
+                $err->push('username', 'Username already exists');
+            }
+        }
+            
+        $email = $db->escape_string($email);
+
+        if ( $email !== $this->user['email'] ) {
+            $user = $db->query(sprintf(self::$CHECK, 'email', $email))->fetch_assoc();
+            if ( $user ) {
+                $err->push('email', 'Email already exists');
+            }
+        }
+        
+        if ( $password ) {
+            $password = md5($db->real_escape_string($password));
+        }
+
+        
+        if( $err->is_set() ) {
+            throw $err;
+        } else {
+            if ( $username !== $this->user['username'] ) {
+                $db->query(sprintf(self::$UPDATE, 'username', $username, 'username', $this->user['username']));
+            }
+            
+            if ( $email !== $this->user['email'] ) {
+                $db->query(sprintf(self::$UPDATE, 'email', $email, 'username', $this->user['username']));
+            }
+            
+            if ( $password ) {
+                $db->query(sprintf(self::$UPDATE, 'password', $password, 'username', $this->user['username']));
+            }
+            
             $this->update_user($username);
         }
     }

@@ -25,7 +25,7 @@ if(isset($_POST['login'])) {
 
 <?php 
 head(array('login'), array('index'));
-login_form_head($config['urls']['base'] . "/login.php");
+login_form_head(PUBLIC_HTML_PATH . "/login.php");
 ?>
 
 <input type="text" placeholder="username" value="<?php echo $username ?>" name="username"/>

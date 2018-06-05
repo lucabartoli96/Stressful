@@ -12,15 +12,15 @@ require_once("config_local.php");
 
 $config = array(
     "db" => $config_local["db"],
-    "urls" => array(
-        "base" => "http://localhost/Stressful/public_html"
-    ),
     "paths" => array(
         "resources" => "/Stressful/resources",
         "images" => $_SERVER["DOCUMENT_ROOT"] . "/img"
     )
 );
  
+
+defined("PUBLIC_HTML_PATH")
+    or define("PUBLIC_HTML_PATH", "http://localhost/Stressful/public_html");
 
 defined("LIBRARY_PATH")
     or define("LIBRARY_PATH", realpath(dirname(__FILE__) . '/library'));

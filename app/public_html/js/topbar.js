@@ -2,21 +2,6 @@
 	
 	'use strict';
     
-    function clickMenu() {
-        
-        $('#navbar ul li a:not(.call-to-action a)')
-        .click(function(event) {
-            event.preventDefault();
-            $('.active').removeClass('active');
-            $(this).closest('li').addClass('active');
-            
-            var section = $(this).data('section');
-            $('.section').hide();
-            $('#' + section).show();
-        });
-
-	}
-    
     function logout() {
         
         $('.logout').click(function() {

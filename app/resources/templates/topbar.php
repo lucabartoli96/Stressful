@@ -7,15 +7,15 @@
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <?php
-                        $active = true;
                     
                         foreach ( $sections as $a ) {
                             echo "<li";
-                            if ( $active ) {
+                            if ( $active === $a ) {
                                 echo " class='active' ";
                                 $active = false;
                             }
-                            echo "><a data-section='" . strtolower($a) ."'><span>$a</span></a></li>\n";
+                            
+                            echo "><a href='" . PUBLIC_HTML_PATH . '/' . strtolower($a) .".php'><span>$a</span></a></li>\n";
                         }
                     
                     ?>
