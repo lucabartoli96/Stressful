@@ -12,7 +12,7 @@ if ( !$user->is_logged() ) {
 }
 
 head(array('topbar', 'sections', 'profile'), array('topbar', 'profile'));
-topbar(array('Home', 'Test', 'Profile'), 'Profile');
+topbar(array('Home', 'Careerm', 'Profile'), 'Profile');
 
 section_head();
 ?>

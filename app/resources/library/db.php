@@ -3,6 +3,7 @@
 require_once("/var/www/html/Stressful/resources/config.php");
 require_once('exceptions.php');
 require_once('user.php');
+require_once('test.php');
 require_once('category.php');
 
 class Session {

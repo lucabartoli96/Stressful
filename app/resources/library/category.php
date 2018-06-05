@@ -9,9 +9,6 @@ class Category {
     private static $DELETE = "DELETE FROM category WHERE name='%s'";
     
     private static $instance = null;
-
-    private $db = null;
-    private $user = null;
     
     private function __construct() { }
     
