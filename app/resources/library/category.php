@@ -50,7 +50,7 @@ class Category {
             }
             
         } else {
-            throw new UserException('User does not have enough privilieges to add a test');
+            throw new UserException('User does not have enough privilieges to add a category');
         }
         
     }
@@ -65,7 +65,7 @@ class Category {
             $db->query(sprintf(self::$DELETE, $name));
             
         } else {
-            throw new UserException('User does not have enough privilieges to delete a test');
+            throw new UserException('User does not have enough privilieges to delete a category');
         }
     }
 }

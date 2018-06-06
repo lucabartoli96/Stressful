@@ -2,7 +2,7 @@
     <div class="fluid-container">
         <nav class="navbar navbar-default">
             <div class="navbar-header">
-                <img src="img/LOGO_orange.png">
+                <img id='logo' src="img/LOGO_orange.png">
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">

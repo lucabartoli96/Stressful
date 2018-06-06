@@ -11,12 +11,15 @@
 require_once("config_local.php");
 
 $config = array(
-    "db" => $config_local["db"],
     "paths" => array(
-        "resources" => "/Stressful/resources",
-        "images" => $_SERVER["DOCUMENT_ROOT"] . "/img"
+        "resources" => "/Stressful/resources"
+    ),
+    "info" => array(
+        "topbar" => array('Home', 'Career', 'Profile'),
     )
 );
+
+$config = array_merge($config, $config_local);
  
 
 defined("PUBLIC_HTML_PATH")

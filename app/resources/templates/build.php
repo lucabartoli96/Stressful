@@ -50,7 +50,12 @@ function section_foot() {
     echo "</div> </div>";
 }
 
-function table($content) {
+
+function empty_message($msg) {
+    echo "<h1>$msg</h1>";
+}
+
+function table($id, $content, $admin, $name='', $value='') {
     include('table.php');
 }
 

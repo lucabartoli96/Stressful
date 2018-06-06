@@ -15,6 +15,16 @@ th, td {
   padding-right: 10px;
 }
 
+.last_column button {
+    background: transparent;
+    border: none;
+}
+
+.last_column button img {
+    height: 30px;
+    margin-left: 10px;
+}
+
 td {
   width: 130px;
   padding-left: 25px;

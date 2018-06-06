@@ -12,18 +12,42 @@ if ( !$user->is_logged() ) {
 }
 
 head(array('topbar', 'sections', 'table'), array('table', 'topbar', 'home'));
-topbar(array('Home', 'Career', 'Profile'));
+topbar($config['info']['topbar']);
 section_head();
 
 
 if ( isset($_POST['category']) ) {
     
+    if ( $user->is_admin() and isset($_POST['delete']) ) {
+        
+        Test::get()->delete($_POST['delete']);
+        
+    }
+    
     $category = $_POST['category'];
-    table(Test::get()->all($category));
+    $all = Test::get()->all($category);
+    
+    if ( empty($all) ) {
+        empty_message("No test to show inside $category");
+    } else {
+        table('test', $all, $user->is_admin(), 'category', $category);
+    }
     
 } else {
     
-    table(Category::get()->all());
+    if ( $user->is_admin() and isset($_POST['delete']) ) {
+        
+        Category::get()->delete($_POST['delete']);
+        
+    }
+    
+    $all = Category::get()->all();
+    
+    if ( empty($all) ) {
+        empty_message("No category to show");
+    } else {
+        table('category', $all, $user->is_admin());
+    }
     
 }
 

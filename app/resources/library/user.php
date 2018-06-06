@@ -50,7 +50,7 @@ class User {
     
     public function since() {
         if($this->is_logged()) {
-            return $this->user['date'];
+            return $this->user['since'];
         } else {
             throw new UserException('User still unlogged');
         }

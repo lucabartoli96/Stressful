@@ -3,6 +3,8 @@
 class Test {
     
     private static $ALL = "SELECT * FROM test WHERE category='%s'";
+    private static $DELETE = "DELETE FROM test WHERE name='%s'";
+    
     
     private static $instance = null;
 
@@ -28,6 +30,21 @@ class Test {
             array_push($converted, $row);
         }
         return $converted;
+    }
+    
+    
+    public function delete($name) {
+            
+        $user = User::get();
+        
+        if( $user->is_admin() ) {
+            
+            $db = Connection::get();
+            $db->query(sprintf(self::$DELETE, $name));
+            
+        } else {
+            throw new UserException('User does not have enough privilieges to delete a test');
+        }
     }
 }
 
