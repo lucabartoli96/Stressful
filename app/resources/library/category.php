@@ -34,14 +34,14 @@ class Category {
         return $converted;
     }
     
-    public function add($name) {
+    public function add($name, $creator) {
         
         $user = User::get();
         
         if( $user->is_admin() ) {
          
             $db = Connection::get();
-            $category = $db->query(sprintf(self::$CHECK, $name))->fetch_assoc();
+            $category = $db->query(sprintf(self::$CHECK, $name));
         
             if( $category ) {
                 throw new CategoryException("$name already exists!");
@@ -68,6 +68,29 @@ class Category {
             throw new UserException('User does not have enough privilieges to delete a category');
         }
     }
+    
+    
+    public function change_name($old_name, $name) {
+        
+        $user = User::get();
+        
+        if( $user->is_admin() ) {
+         
+            $db = Connection::get();
+            $category = $db->query(sprintf(self::$CHECK, $name));
+        
+            if( $category ) {
+                throw new CategoryException("$name already exists!");
+            } else {
+                $db->query(sprintf(self::$UPDATE, $name));
+            }
+            
+        } else {
+            throw new UserException('User does not have enough privilieges to add a category');
+        }
+        
+    }
+    
 }
 
 ?>

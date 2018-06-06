@@ -3,7 +3,8 @@
 class Test {
     
     private static $ALL = "SELECT * FROM test WHERE category='%s'";
-    private static $DELETE = "DELETE FROM test WHERE name='%s'";
+    private static $DELETE = "DELETE FROM test WHERE category='%s' AND name='%s'";
+    private static $ADD = "INSERT INTO test (category, name) VALUES ('%s', '%s')";
     
     
     private static $instance = null;
@@ -33,17 +34,31 @@ class Test {
     }
     
     
-    public function delete($name) {
+    public function delete($category, $name) {
             
         $user = User::get();
         
         if( $user->is_admin() ) {
             
             $db = Connection::get();
-            $db->query(sprintf(self::$DELETE, $name));
+            $db->query(sprintf(self::$DELETE, $category, $name));
             
         } else {
             throw new UserException('User does not have enough privilieges to delete a test');
+        }
+    }
+    
+        public function add($category, $name) {
+            
+        $user = User::get();
+        
+        if( $user->is_admin() ) {
+            
+            $db = Connection::get();
+            $db->query(sprintf(self::$ADD, $category, $name));
+            
+        } else {
+            throw new UserException('User does not have enough privilieges to add a test');
         }
     }
 }

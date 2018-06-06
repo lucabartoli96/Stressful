@@ -18,3 +18,26 @@
   flex-wrap: wrap;
   padding: 33px 30px;
 }
+
+.home-button {
+    position: fixed;
+}
+
+.home-button {
+    border: none;
+    background: transparent;
+}
+
+.home-button img {
+    height: 60px;
+}
+
+#back {
+    left: 50px;
+    top: 70px;
+}
+
+#plus {
+    right: 50px;
+    bottom: 50px;
+}

@@ -11,7 +11,7 @@ if ( !$user->is_logged() ) {
     header('location: login.php');
 }
 
-head(array('topbar', 'sections', 'table'), array('table', 'topbar'));
+head(array('topbar', 'sections', 'table'), array('utils', 'table', 'topbar'));
 topbar($config['info']['topbar'], 'Career');
 
 section_head();

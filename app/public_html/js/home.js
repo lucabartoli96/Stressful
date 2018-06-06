@@ -1,6 +1,15 @@
 (function() {
     
     
+    var MODAL = "<div class='shadow'>" + 
+                    "<form method='post' id='modal'>" + 
+                       "<span id='close'>&times;</span>" + 
+                       "<input type='text' name='name' placeholder='name'> " + 
+                       "<button type='submit' name='{0}'> {1} </button>" + 
+                    "</form>" + 
+                "</div>";
+    
+    
     function clickTable() {
         
         $('table tbody tr').click(function (event) {
@@ -8,19 +17,9 @@
             var name = $(this).closest('table').data('id'),
                 value = $(this).find('td:eq(0)').html();
             
-            var form = document.createElement("form");
-            form.setAttribute('method', 'POST');
-            form.setAttribute('style', 'display: none');
-            
-            var input = document.createElement('input');
-            input.setAttribute('type', 'hidden');
-            input.setAttribute('name', name);
-            input.setAttribute('value', value);
-            
-            form.appendChild(input);
-
-            document.body.appendChild(form);
-            form.submit();
+            var params = {};
+            params[name] = value;
+            post(params);
             
         });
         
@@ -30,6 +29,23 @@
         
         $('button.modify').click(function (event) {
             event.stopPropagation();
+            
+            var modal = $(MODAL.replace('{0}', 'modify')
+                               .replace('{1}', 'modify'));
+            
+            
+            var input = $("<input type='hidden'>");
+            
+            input.attr('oldname', name);
+            input.attr('value', value);
+            
+            modal.find('form').append(input);
+            
+            $(modal).find('.close').click(function() {
+                modal.remove();
+            });
+            
+            $('header').after(modal);
             
         });
         
@@ -41,35 +57,55 @@
                 
                 var table = $(this).closest('table');
                 
-                var form = document.createElement("form");
-                form.setAttribute('method', 'POST');
-                form.setAttribute('style', 'display: none');
+                var params = {};
 
                 if ( table.data('name') !== '' && table.data('value') !== '' ) {
-                    var input = document.createElement('input');
-                    input.setAttribute('type', 'hidden');
-                    input.setAttribute('name', table.data('name'));
-                    input.setAttribute('value', table.data('value'));
-                    form.appendChild(input);
+                    params[table.data('name')] = table.data('value');
                 }
                 
-                var input = document.createElement('input');
-                input.setAttribute('type', 'hidden');
-                input.setAttribute('name', 'delete');
-                input.setAttribute('value', name);
-                form.appendChild(input);
-                
-                document.body.appendChild(form);
-                form.submit();
-
+                params['delete'] = name; 
+                post(params);
             }
         });
         
     }
     
+    
+    function backButton() {
+        
+        $('#back').click(function() {
+            post();
+        });
+        
+    }
+    
+    
+    function plusButton() {
+        
+        $('#plus').click(function() {
+            
+            var modal = $(MODAL.replace('{0}', 'add')
+                               .replace('{1}', 'Add'));
+            
+            $(modal).find('.close').click(function() {
+               
+                modal.remove();
+                
+            });
+            
+            $('header').after(modal);
+            
+        });
+        
+    }
+    
+    
     $(function() {
        clickTable();
        adminButtons();
+       backButton();
+       plusButton();
+        
     });
     
     
