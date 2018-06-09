@@ -33,19 +33,13 @@ if ( isset($_POST['category']) ) { //TESTS state
     
     $category = $_POST['category'];
     
-    
     if ( $user->is_admin() ) {
         
         if ( $user->is_admin() and isset($_POST['delete']) ) {
         
             Test::get()->delete($category, $_POST['delete']);
         
-        } else if( isset($_POST['add']) ){
-        
-            Test::get()->add($category, $_POST['name']);
-            //DO SOMETHING
-        
-        } else if( isset($_POST['modify']) ) {
+        }  else if( isset($_POST['modify']) ) {
             //DO SOMETHING
         }
     
@@ -54,7 +48,7 @@ if ( isset($_POST['category']) ) { //TESTS state
     $all = Test::get()->all($category);
     
     if ( empty($all) ) {
-        empty_message("No test to show inside $category");
+        empty_message('test', "No test to show inside $category", 'category', $category);
     } else {
         table('test', $all, $user->is_admin(), 'category', $category);
     }
@@ -88,7 +82,7 @@ if ( isset($_POST['category']) ) { //TESTS state
     $all = Category::get()->all();
     
     if ( empty($all) ) {
-        empty_message("No category to show");
+        empty_message('category', "No category to show");
     } else {
         table('category', $all, $user->is_admin());
     }

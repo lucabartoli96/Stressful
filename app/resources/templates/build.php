@@ -58,8 +58,14 @@ function plus_button() {
     echo "<button id='plus' class='home-button' > <img src='img/plus.png' /> </button>";
 }
 
-function empty_message($msg) {
-    echo "<h1>$msg</h1>";
+function empty_message($id, $msg, $name='', $value='') {
+    echo "<h1 data-id='$id'";
+    
+    if ( $name !== '' and $value !== '' ) {
+        echo " data-$name=$value ";
+    }
+    
+    echo ">$msg</h1>";
 }
 
 function modal($operation, $err, $value = null) {
@@ -94,3 +100,11 @@ function profile_desc($user) {
     profile_desc_line('Since', $user->since());
     echo "<button type='submit' name='modify'>Modify</button>";  
 }
+
+
+function newtest() {
+    include('testform.php');
+}
+
+
+

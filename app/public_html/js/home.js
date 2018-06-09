@@ -96,7 +96,7 @@
 
             if ( input.val() === '' ) {
                 event.preventDefault();
-                input.after(err_msg('name is required'));
+                input.after(errMsg('name is required'));
             }
 
         });
@@ -114,12 +114,32 @@
         
         $('#plus').click(function() {
             
-            var modal = $(MODAL.replace('{0}', 'add')
+            var tag = null;
+            
+            if( $('.section').find('table').length ) {
+                tag = $('.section').find('table');
+            } else {
+                tag = $('.section').find('h1');
+            }
+            
+            var id = tag.data('id');
+            
+            if ( id === 'category' ) {
+                var modal = $(MODAL.replace('{0}', 'add')
                                .replace('{1}', 'Add'));
             
-            formEvents(modal);
-            
-            $('header').after(modal);
+                formEvents(modal);
+
+                $('header').after(modal);
+                
+            } else {
+                
+                post({
+                    'add' : true,
+                    'category' : tag.data('category')
+                }, 
+                getLocation() + "/newtest.php");
+            }
             
         });
         

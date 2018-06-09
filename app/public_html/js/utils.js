@@ -31,6 +31,12 @@ function post(params, URL) {
 }
 
 
-function err_msg(msg) {
+function getLocation() {
+     var location = window.location.href;
+     return location.substr(0, location.lastIndexOf('/'));
+}
+
+
+function errMsg(msg) {
     return '<div class="alert alert-warning">' + msg + '</div>';
 }

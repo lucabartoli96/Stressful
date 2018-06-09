@@ -6,8 +6,7 @@
         
         $('.logout').click(function() {
             
-            var URL = window.location.href;
-            URL = URL.substr(0, URL.lastIndexOf('/')) + "/login.php";
+            var URL = getLocation() + "/login.php";
             
             post({
                 'logout' : 'true'
