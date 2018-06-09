@@ -16,13 +16,6 @@
     var questions;
     
     
-    function addQuestion() {
-    }
-    
-    
-    function plusQuestion() {
-    }
-    
     $(function() {
         
         $('form').submit(function(event) {
