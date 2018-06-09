@@ -86,6 +86,10 @@ class Category {
             $name = $db->real_escape_string($name);
             $old_name = $db->real_escape_string($old_name);
             
+            if ( $name === $old_name) {
+                return;
+            }
+            
             $category = $db->query(sprintf(self::$CHECK, $name))->fetch_assoc();
         
             if( $category ) {
