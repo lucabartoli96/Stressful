@@ -38,7 +38,7 @@ class UserException extends Exception {
     }
 }
 
-class CategoryException {
+class CategoryException extends Exception {
 
     public function __construct($message) {
         parent::__construct($message);

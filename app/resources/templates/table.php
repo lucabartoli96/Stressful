@@ -1,8 +1,7 @@
 <div class="wrap-table">
     <div class="table">
-        <table data-id="<?php echo $id; ?>" 
-               data-name="<?php echo $name; ?>" 
-               data-value="<?php echo $value; ?>" >
+        <table data-id = "<?php echo $id; ?>"
+               data-<?php echo $name; ?>="<?php echo $value; ?>" >
             <thead>
                 <tr class="head">
                     <th class="column1"></th>

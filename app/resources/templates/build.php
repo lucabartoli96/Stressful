@@ -62,6 +62,10 @@ function empty_message($msg) {
     echo "<h1>$msg</h1>";
 }
 
+function modal($operation, $err, $value = null) {
+    include("modal.php");
+}
+
 function table($id, $content, $admin, $name='', $value='') {
     include('table.php');
 }

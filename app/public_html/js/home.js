@@ -31,19 +31,21 @@
             event.stopPropagation();
             
             var modal = $(MODAL.replace('{0}', 'modify')
-                               .replace('{1}', 'modify'));
+                               .replace('{1}', 'Modify')),
+                form = modal.find('form');
             
+            formEvents(modal);
             
-            var input = $("<input type='hidden'>");
+            var oldname = $(this).closest('tr').find('td:eq(0)').html();
             
-            input.attr('oldname', name);
-            input.attr('value', value);
+            form.find("button").val(oldname);
             
-            modal.find('form').append(input);
+            var table = $(this).closest('table'),
+                id = table.data('id');
             
-            $(modal).find('.close').click(function() {
-                modal.remove();
-            });
+            if ( id === 'test' ) {
+                addHiddenInput(form, 'category', table.data('category'));
+            }
             
             $('header').after(modal);
             
@@ -51,16 +53,16 @@
         
         $('button.delete').click(function (event) {
             event.stopPropagation();
-            var name = $(this).closest('tr').find('td:eq(0)').html();
+            var name = $(this).closest('tr').find('td:eq(0)').html(),
+                table = $(this).closest('table'),
+                id = table.data('id');
             
-            if (confirm("Are you sure you want to delete " + name + "?")) {
-                
-                var table = $(this).closest('table');
+            if (confirm("Are you sure you want to delete " + name + " " + id + "?")) {
                 
                 var params = {};
 
-                if ( table.data('name') !== '' && table.data('value') !== '' ) {
-                    params[table.data('name')] = table.data('value');
+                if( id === 'test' ) {
+                    params['category'] = table.data('category');
                 }
                 
                 params['delete'] = name; 
@@ -80,6 +82,34 @@
     }
     
     
+    function formEvents(modal) {
+        
+        modal = modal || $('.shadow');
+        
+        var form = modal.find('form');
+        
+        form.submit(function(event) {
+            
+            $('.alert').remove();
+            
+            var input = $(this).find("input[name='name']");
+
+            if ( input.val() === '' ) {
+                event.preventDefault();
+                input.after(err_msg('name is required'));
+            }
+
+        });
+
+        $(form).find('#close').click(function() {
+
+            modal.remove();
+
+        });
+        
+    }
+    
+    
     function plusButton() {
         
         $('#plus').click(function() {
@@ -87,11 +117,7 @@
             var modal = $(MODAL.replace('{0}', 'add')
                                .replace('{1}', 'Add'));
             
-            $(modal).find('.close').click(function() {
-               
-                modal.remove();
-                
-            });
+            formEvents(modal);
             
             $('header').after(modal);
             
@@ -105,6 +131,7 @@
        adminButtons();
        backButton();
        plusButton();
+       formEvents();
         
     });
     

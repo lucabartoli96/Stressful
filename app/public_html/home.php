@@ -15,23 +15,40 @@ head(array('topbar', 'sections', 'table', 'modal'), array('utils', 'table', 'top
 topbar($config['info']['topbar']);
 section_head();
 
-if ( isset($_POST['category']) ) {
+/*
+
+There are two states in home, CATEGORIES and TESTS, we are in the
+secondo state iff $_POST['category'] is set.
+
+On the client side the state TESTS differs from the state CATEGORIES
+because the table has a field data-id equals to state in lower case 
+and if the state is TESTS it has the field data-catgory = "category_name".
+
+*/
+
+
+if ( isset($_POST['category']) ) { //TESTS state
     
     back_button();
     
     $category = $_POST['category'];
     
-    if ( $user->is_admin() and isset($_POST['delete']) ) {
+    
+    if ( $user->is_admin() ) {
         
-        Test::get()->delete($category, $_POST['delete']);
+        if ( $user->is_admin() and isset($_POST['delete']) ) {
         
-    } else if( isset($_POST['add']) ){
+            Test::get()->delete($category, $_POST['delete']);
         
-        Test::get()->add($category, $_POST['name']);
-        //DO SOMETHING
+        } else if( isset($_POST['add']) ){
         
-    } else if( isset($_POST['modify']) ) {
-        //DO SOMETHING
+            Test::get()->add($category, $_POST['name']);
+            //DO SOMETHING
+        
+        } else if( isset($_POST['modify']) ) {
+            //DO SOMETHING
+        }
+    
     }
     
     $all = Test::get()->all($category);
@@ -42,7 +59,7 @@ if ( isset($_POST['category']) ) {
         table('test', $all, $user->is_admin(), 'category', $category);
     }
     
-} else {
+} else { //CATEGORY state
     
     if ( $user->is_admin() and isset($_POST['delete']) ) {
         
@@ -50,12 +67,22 @@ if ( isset($_POST['category']) ) {
         
     } else if( isset($_POST['add']) ){
         
-        Category::get()->add($_POST['name'], $user->name());
+        try {
+            Category::get()->add($_POST['name'], $user->name());
+        } catch ( CategoryException $err ) {
+            modal('Add', $err);
+        }
         
     } else if( isset($_POST['modify']) ) {
-        $old_name = $_POST['oldname']
+        
+        $old_name = $_POST['modify'];
         $name = $_POST['name'];
-        Category::get()->change_name($old_name, $new_name);
+        
+        try {
+            Category::get()->change_name($old_name, $name);
+        } catch ( CategoryException $err ) {
+            modal('Modify', $err, $old_name);
+        }
     }
     
     $all = Category::get()->all();

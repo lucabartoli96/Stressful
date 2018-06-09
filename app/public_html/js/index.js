@@ -2,10 +2,6 @@
     
     function checkInput() {
         
-        var err_msg = function (msg) {
-            return '<div class="alert alert-warning">' + msg + '</div>';
-        }
-        
         $("form").submit(function(event) {
             
             $(".alert").remove();
