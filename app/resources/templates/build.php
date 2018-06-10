@@ -101,8 +101,21 @@ function profile_desc($user) {
     echo "<button type='submit' name='modify'>Modify</button>";  
 }
 
+function hiddenForm($module, $params) {
+    echo "<form id='hiddenForm' method='post' action='$module' style='display: none'>";
+    
+    foreach ($params as $a => $b) {
+        echo '<input type="hidden" name="'.htmlentities($a).'" value="'.htmlentities($b).'">';
+    }
+    
+    echo "</form>" .
+         "<script type='text/javascript'>" .
+            "document.getElementById('hiddenForm').submit();" .
+         "</script>";
+}
 
-function newtest() {
+
+function newtest($creator, $category, $err = null) {
     include('testform.php');
 }
 

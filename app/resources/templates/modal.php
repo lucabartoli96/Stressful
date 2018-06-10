@@ -3,7 +3,7 @@
        <span id='close'>&times;</span>  
        <input type='text' name='name' placeholder='name'>  
         <?php 
-        login_err($err->getMessage());
+        login_err($err);
         ?>
        <button type='submit' 
                name='<?php echo strtolower($operation); ?>'

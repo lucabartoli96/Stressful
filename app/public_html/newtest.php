@@ -15,7 +15,7 @@ if ( !$user->is_admin() ) {
     header('location: home.php');
 }
 
-head(array('sections', 'newtest'), array('newtest'));
+head(array('sections', 'newtest'), array('utils','newtest'));
 section_head();
 
 if( !isset( $_POST['category'] ) ) {
@@ -23,7 +23,33 @@ if( !isset( $_POST['category'] ) ) {
     die();
 } else {
  
-    newtest();
+    if ( isset($_POST['name']) and isset($_POST['questions']) ) {
+        
+        try {
+            //signature: $category, $name, $number, $correct, $mistake, $questions
+            Test::get()->add(
+                $_POST['category'],
+                $_POST['name'],
+                $_POST['number'],
+                $_POST['correct'],
+                $_POST['mistake'],
+                $_POST['questions']
+            );
+            
+            echo "<h1>Successfully created</h1>";
+            hiddenForm(PUBLIC_HTML_PATH . '/home.php', 
+                       array(
+                        'category' => $_POST['category']
+                      ));
+            
+            
+        } catch ( TestException $err ) {
+            newtest($user->name(), $_POST['category'], $err->getMessage());
+        }
+        
+    } else {
+        newtest($user->name(), $_POST['category']);
+    }
     
 }
 

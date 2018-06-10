@@ -21,6 +21,10 @@ CREATE TABLE category (
 CREATE TABLE test (
     name VARCHAR(100),
     category VARCHAR(100),
+    number INT,
+    correct INT,
+    mistake INT, 
+    questions LONGTEXT,
     since TIMESTAMP,
     PRIMARY KEY(name, category),
     FOREIGN KEY(category) REFERENCES category(name) ON DELETE CASCADE

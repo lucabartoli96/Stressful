@@ -1,12 +1,13 @@
 .main-box {
-  width: 80%;
-  padding: 8% 0 0;
-  min-height: 600px;
-  background: #FFFFFF;
-  margin: auto; 
-  font-size: 20px;
-  padding: 45px;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    position: relative;
+    width: 80%;
+    padding: 8% 0 0;
+    min-height: 600px;
+    background: #FFFFFF;
+    margin: auto; 
+    font-size: 20px;
+    padding: 45px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 
 input {
@@ -17,7 +18,7 @@ input {
     border: 0;
 }
 
-.form-header {
+#form-header {
     font-family: "PT Sans", Arial, serif;
     margin: auto;
     width: 50%;
@@ -27,39 +28,38 @@ input {
 }
 
 
-.form-header input {
+#form-header input {
     font-size: 20px;
     text-align: center;
     padding: 2px;
 }
 
-input:not(.form-header input) {
+input:not(#form-header input) {
   padding: 15px;
   box-sizing: border-box;
   font-size: 14px;
 }
 
-.question-form input[type='text'] {
-    width: 95%;
-    text-align: center;
-}
-
-
-.plus-option, .plus-question {
+#question-form button {
     border: none;
     background-color: transparent;
 }
 
-.plus-option {
-    
+.question {
+    margin-top: 20px;
+    position: relative;
+}
+
+.question > input {
+    width: 95%;
+}
+
+.fields input[type='text'] {
+    width: 70%;
 }
 
 .plus-option img {
     height: 40px;
-}
-
-.plus-question {
-    
 }
 
 .plus-question img {
@@ -75,40 +75,41 @@ input:not(.form-header input) {
     display: block;
 }
 
-/*
-button {
-  font-family: "PT Sans", Arial, serif;
-  outline: 0;
-  background: #43A047;
-  width: 100%;
-  border: 0;
-  padding: 15px;
-  color: #FFFFFF;
-  font-size: 18px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
-  cursor: pointer;
-   -webkit-border-radius: 30px;
-  -moz-border-radius: 30px;
-  -ms-border-radius: 30px;
-  border-radius: 30px;
+.buttons {
+    position: absolute;
+    right: 0;
+    bottom: 0;
 }
-button:hover, button:active {
+
+.delete img {
+    width: 40px; 
+}
+
+#form-footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 20px;
+}
+
+button[type='submit'] {
+    font-family: "PT Sans", Arial, serif;
+    outline: 0;
+    background: #43A047;
+    border: 0;
+    width: 80px;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 18px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    cursor: pointer;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    -ms-border-radius: 30px;
+    border-radius: 30px;
+}
+
+button[type='submit']:hover, button[type='submit']:active {
   background: #ff5d00;
 }
-
-.message {
-  margin: 15px 0 0;
-  color: #b3b3b3;
-  font-size: 12px;
-}
-.message a {
-  color: #ff5d00;
-  text-decoration: none;
-}
-.message a:hover {
-  color: #43A047;
-  text-decoration: none;
-}
-
-*/

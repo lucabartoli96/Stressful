@@ -64,7 +64,7 @@ if ( isset($_POST['category']) ) { //TESTS state
         try {
             Category::get()->add($_POST['name'], $user->name());
         } catch ( CategoryException $err ) {
-            modal('Add', $err);
+            modal('Add', $err->getMessage());
         }
         
     } else if( isset($_POST['modify']) ) {
@@ -75,7 +75,7 @@ if ( isset($_POST['category']) ) { //TESTS state
         try {
             Category::get()->change_name($old_name, $name);
         } catch ( CategoryException $err ) {
-            modal('Modify', $err, $old_name);
+            modal('Modify', $err->getMessage(), $old_name);
         }
     }
     
