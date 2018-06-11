@@ -55,7 +55,7 @@
                     'category' : table.data('category'),
                     'name' : name
                 }, 
-                getLocation() + "/newtest.php");
+                getLocation() + "/testadmin.php");
                 
             }
             
@@ -147,7 +147,7 @@
                 post({
                     'category' : tag.data('category')
                 }, 
-                getLocation() + "/newtest.php");
+                getLocation() + "/testadmin.php");
             }
             
         });
