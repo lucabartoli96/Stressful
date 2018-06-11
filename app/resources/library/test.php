@@ -126,16 +126,8 @@ class Test {
     }
     
     public function getTest($category, $name) {
-        $user = User::get();
-        
-        if( $user->is_admin() ) {
-            
-            $db = Connection::get();
-            return $db->query(sprintf(self::$GET, $category, $name))->fetch_array();
-        
-        } else {
-            throw new UserException('User does not have enough privilieges to fetch a single test');
-        }
+        $db = Connection::get();
+        return $db->query(sprintf(self::$GET, $category, $name))->fetch_array();
     }
     
 }

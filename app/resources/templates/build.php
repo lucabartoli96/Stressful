@@ -115,7 +115,7 @@ function hiddenForm($module, $params) {
 }
 
 
-function print_questions($questions_json) {
+function print_questions_admin($questions_json) {
     $questions = json_decode($questions_json, true);
     
     $index = 0;
@@ -160,10 +160,42 @@ function print_questions($questions_json) {
 }
 
 
+function print_questions($questions_json) {
+    $questions = json_decode($questions_json, true);
+    
+    echo "<div id='question-form'>";
+    
+    $index = 0;
+    
+    foreach ( $questions as $question ) {
+        
+        echo "<li class='question'>";
+        echo $question['question'];
+        echo    "<ul class='fields'>";
+        
+        foreach ( $question['options'] as $option ) {
+            echo "<li> <input type='radio' name='question-$index'><p>$option</p></li>";
+        }
+                            
+        echo   "</ul>" . 
+            "</li>";
+        
+        $index++;
+        
+    }
+    
+    echo "</div>";
+}
+
+
+
 
 function newtest($operation, $creator, $category, $name=null, $number=null, $correct=null, $mistake=null, $questions=null, $err = null) {
     include('testtools.php');
 }
 
+function loadtest($category, $name, $questions) {
+    include('testui.php');
+}
 
 

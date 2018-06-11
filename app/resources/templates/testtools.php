@@ -77,7 +77,7 @@
             <?php
             
             if ( $questions ) {
-                print_questions($questions);    
+                print_questions_admin($questions);    
             }
             
             ?>

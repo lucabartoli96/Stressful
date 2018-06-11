@@ -14,12 +14,21 @@
         
         $('table tbody tr').click(function (event) {
             
-            var name = $(this).closest('table').data('id'),
+            var table = $(this).closest('table'),
+                id = table.data('id'),
                 value = $(this).find('td:eq(0)').html();
             
-            var params = {};
-            params[name] = value;
-            post(params);
+            if ( id !== 'test' ) {
+                var params = {};
+                params[id] = value;
+                post(params);
+            } else {
+                post({
+                    'name' : value,
+                    'category' : table.data('category')
+                },
+                getLocation() + '/testuser.php');
+            }
             
         });
         
