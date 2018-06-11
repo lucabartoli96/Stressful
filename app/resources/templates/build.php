@@ -120,11 +120,6 @@ function print_questions($questions_json) {
     
     $index = 0;
     
-    /*
-    "<li> <input type='radio' name='{0}'> <input type='text'> </li>";
-    
-    */
-    
     foreach ( $questions as $question ) {
         
         echo "<li class='question'>" .
