@@ -37,5 +37,6 @@ defined("TEMPLATES_PATH")
 
 ini_set("error_reporting", "true");
 error_reporting(E_ALL|E_STRCT);
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
  
 ?>

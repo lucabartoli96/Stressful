@@ -16,8 +16,7 @@
         OPTION = "<li> <input type='radio' name='{0}'> <input type='text'> </li>";
          
     
-    var index = 0,
-        number = 0;
+    var index, number;
     
     var question_form, number_output, points_output;
     
@@ -29,7 +28,7 @@
     }
     
     function init() {
-        
+        index = number = $('.question').length;
         question_form = $('#question-form');
         number_output = $('#questions-number');
         points_output = $('#total-points');
@@ -62,7 +61,11 @@
             number++;
             updateTable();
             
-        }).click();
+        });
+        
+        if( $('.question').length === 0 ) {
+            $('.plus-question').click();
+        }
     }
     
     
@@ -88,15 +91,15 @@
             }, getLocation() + '/home.php');
         });
         
-        $("button[name='newtest']").click(function(event) {
+        $("button[name='create'], button[name='update']").click(function(event) {
             event.preventDefault();
             
             $('.alert').remove();
             
-            var name = $('#name').val(),
+            var name = $('#name').val().trim(),
                 correct = Number($('#correct').val() || 1),
                 mistake = Number($('#mistake').val() || 0),
-                category = $('#category').html();
+                category = $('#category').html().trim();
             
             if ( name === '' ) {
                 $('#name').closest('tr')
@@ -150,11 +153,11 @@
                     var options = [];
                 
                     inputs.each(function() {
-                        options.push($(this).val());
+                        options.push($(this).val().trim());
                     });
 
                     list.push({
-                        'question' : question,
+                        'question' : question.trim(),
                         'answear'  : checked.closest('li').index(),
                         'options'  : options
                     });
@@ -164,15 +167,20 @@
             
             
             if ( !err_flag ) {
-                
-                post({
+                var params = {
                         'name'     : name,
                         'number'   : list.length,
                         'correct'  : correct,
                         'mistake'  : mistake,
                         'category' : category,
                         'questions': JSON.stringify(list)
-                    });
+                    };
+                
+                if ( $(this).attr('name') === 'update' ) {
+                    params['update'] = $(this).val();
+                }
+                
+                post(params);
             }
             
             

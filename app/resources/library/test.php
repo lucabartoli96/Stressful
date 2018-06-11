@@ -2,11 +2,13 @@
 
 class Test {
     
-    private static $ALL = "SELECT * FROM test WHERE category='%s'";
+    private static $ALL = "SELECT name, number AS questions, correct AS 'Correct answear', mistake AS 'Wrong answear', correct*number AS 'total points' from test WHERE category='%s'";
     private static $DELETE = "DELETE FROM test WHERE category='%s' AND name='%s'";
-    private static $CHECK = "SELECT * FROM test WHERE category='%s' AND name='%s'";
+    private static $GET = "SELECT * FROM test WHERE category='%s' AND name='%s'";
     private static $ADD = "INSERT INTO test (category, name, number, correct, mistake, questions)".
                           " VALUES ('%s', '%s', %d, %d, %d, '%s') ";
+    private static $UPDATE = "UPDATE test SET name='%s', number=%d, correct=%d, mistake=%d, questions='%s'" .
+                             "WHERE category='%s' AND name='%s'";
     
     
     private static $instance = null;
@@ -46,7 +48,7 @@ class Test {
             $category = $db->real_escape_string($category);
             $name = $db->real_escape_string($name);
             
-            $test = $db->query(sprintf(self::$CHECK, $category, $name))->fetch_assoc();
+            $test = $db->query(sprintf(self::$GET, $category, $name))->fetch_assoc();
         
             if( $test ) {
                 throw new TestException("$name already exists inside $category!");
@@ -58,6 +60,10 @@ class Test {
                 $questions = $db->real_escape_string($questions);
                 
                 $db->query(sprintf(self::$ADD, $category, $name, $number, $correct, $mistake, $questions));
+                /*
+                echo sprintf(self::$ADD, $category, $name, $number, $correct, $mistake, $questions);
+                throw new Exception('Stop');
+                */
             }
                         
         } else {
@@ -65,6 +71,47 @@ class Test {
         }
     }
     
+    public function update($category, $oldname, $name, $number, $correct, $mistake, $questions) {
+        
+        $user = User::get();
+        
+        if( $user->is_admin() ) {
+            $db = Connection::get();
+            
+            $category = null;
+            $name = null;
+            
+            if ( $oldname !== $name ) {
+                $category = $db->real_escape_string($category);
+                $name = $db->real_escape_string($name);
+            
+                $test = $db->query(sprintf(self::$GET, $category, $name))->fetch_assoc();
+                
+                if( $test ) {
+                    throw new TestException("$name already exists inside $category!");
+                }
+            }
+                
+            $oldname = $db->real_escape_string($oldname);
+            $number = $db->real_escape_string($number);
+            $correct = $db->real_escape_string($correct);
+            $mistake = $db->real_escape_string($mistake);
+            $questions = $db->real_escape_string($questions);
+
+            $db->query(sprintf(self::$UPDATE, $name, $number, $correct, 
+                                              $mistake, $questions, 
+                                              $category, $oldname));
+            /*
+            echo sprintf(self::$ADD, $category, $name, $number, $correct, $mistake, $questions);
+            throw new Exception('Stop');
+            */
+            
+        } else {
+            throw new UserException('User does not have enough privilieges to update a test');
+        }
+        
+        
+    }
     
     public function delete($category, $name) {
             
@@ -77,6 +124,19 @@ class Test {
             
         } else {
             throw new UserException('User does not have enough privilieges to delete a test');
+        }
+    }
+    
+    public function getTest($category, $name) {
+        $user = User::get();
+        
+        if( $user->is_admin() ) {
+            
+            $db = Connection::get();
+            return $db->query(sprintf(self::$GET, $category, $name))->fetch_array();
+        
+        } else {
+            throw new UserException('User does not have enough privilieges to fetch a single test');
         }
     }
     

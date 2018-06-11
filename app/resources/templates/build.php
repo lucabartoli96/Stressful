@@ -115,7 +115,58 @@ function hiddenForm($module, $params) {
 }
 
 
-function newtest($creator, $category, $err = null) {
+function print_questions($questions_json) {
+    $questions = json_decode($questions_json, true);
+    
+    $index = 0;
+    
+    /*
+    "<li> <input type='radio' name='{0}'> <input type='text'> </li>";
+    
+    */
+    
+    foreach ( $questions as $question ) {
+        
+        echo "<li class='question'>" .
+                        "<input type='text' value='${question['question']}'>" . 
+                        "<ul id='question-$index' class='fields'>";
+        
+        $option_index = 0;
+        
+        foreach ( $question['options'] as $option ) {
+            
+            echo "<li> <input type='radio' name='question-$index'";
+            
+            if( $option_index == $question['answear'] ) {
+                
+                echo ' checked ';
+                
+            }
+                
+            echo "> <input type='text' value='$option'> </li>";
+            
+            $option_index++;
+        }
+        
+        
+                            
+        echo            "<li> <button class='plus-option'> <img src='img/plus.png' /> </button> </li>" . 
+                        "</ul>" . 
+                        "<div class='buttons'>" .
+                            "<button class='delete'>" .
+                                "<img src='img/delete.png' />" . 
+                            "</button>" .
+                        "</div>" .
+                    "</li>";
+        
+        $index++;
+        
+    }
+}
+
+
+
+function newtest($operation, $creator, $category, $name=null, $number=null, $correct=null, $mistake=null, $questions=null, $err = null) {
     include('testform.php');
 }
 

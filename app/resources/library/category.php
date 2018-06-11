@@ -3,7 +3,7 @@
 
 class Category {
     
-    private static $ALL = "SELECT * FROM category";
+    private static $ALL = "SELECT c.name, c.creator, c.since, COUNT(t.name) AS test FROM category AS c LEFT JOIN test AS t ON c.name = t.category GROUP BY c.name, c.creator, c.since";
     private static $CHECK = "SELECT * FROM category WHERE name='%s' LIMIT 1";
     private static $INSERT = "INSERT INTO category (name, creator) VALUES ('%s', '%s')";
     private static $DELETE = "DELETE FROM category WHERE name='%s'";

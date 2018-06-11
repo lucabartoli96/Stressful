@@ -30,24 +30,34 @@
         $('button.modify').click(function (event) {
             event.stopPropagation();
             
-            var modal = $(MODAL.replace('{0}', 'modify')
-                               .replace('{1}', 'Modify')),
-                form = modal.find('form');
-            
-            formEvents(modal);
-            
-            var oldname = $(this).closest('tr').find('td:eq(0)').html();
-            
-            form.find("button").val(oldname);
-            
             var table = $(this).closest('table'),
                 id = table.data('id');
             
-            if ( id === 'test' ) {
-                addHiddenInput(form, 'category', table.data('category'));
-            }
+            if ( id !== 'test' ) {
+                var modal = $(MODAL.replace('{0}', 'modify')
+                               .replace('{1}', 'Modify')),
+                form = modal.find('form');
             
-            $('header').after(modal);
+                formEvents(modal);
+
+                var oldname = $(this).closest('tr').find('td:eq(0)').html();
+
+                form.find("button").val(oldname);
+
+                $('header').after(modal);
+                
+            } else {
+                
+                var name = $(this).closest('tr').find('td:eq(0)').html();
+                
+                post({
+                    'modify' : true,
+                    'category' : table.data('category'),
+                    'name' : name
+                }, 
+                getLocation() + "/newtest.php");
+                
+            }
             
         });
         
@@ -135,7 +145,6 @@
             } else {
                 
                 post({
-                    'add' : true,
                     'category' : tag.data('category')
                 }, 
                 getLocation() + "/newtest.php");
