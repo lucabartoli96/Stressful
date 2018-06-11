@@ -78,12 +78,11 @@ class Test {
         if( $user->is_admin() ) {
             $db = Connection::get();
             
-            $category = null;
-            $name = null;
+            $category = $db->real_escape_string($category);
+            $name = $db->real_escape_string($name);
+            $oldname = $db->real_escape_string($oldname);
             
             if ( $oldname !== $name ) {
-                $category = $db->real_escape_string($category);
-                $name = $db->real_escape_string($name);
             
                 $test = $db->query(sprintf(self::$GET, $category, $name))->fetch_assoc();
                 
@@ -92,7 +91,6 @@ class Test {
                 }
             }
                 
-            $oldname = $db->real_escape_string($oldname);
             $number = $db->real_escape_string($number);
             $correct = $db->real_escape_string($correct);
             $mistake = $db->real_escape_string($mistake);

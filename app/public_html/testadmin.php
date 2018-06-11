@@ -15,7 +15,7 @@ if ( !$user->is_admin() ) {
     header('location: home.php');
 }
 
-head(array('sections', 'newtest'), array('utils','newtest'));
+head(array('sections', 'testadmin'), array('utils','testadmin'));
 section_head();
 
 if( !isset( $_POST['category'] ) ) {
@@ -39,8 +39,7 @@ if( !isset( $_POST['category'] ) ) {
         newtest('Update', $user->name(), 
                 $category, $name, 
                 $number, $correct, 
-                $mistake, $questions
-                $err->getMessage());
+                $mistake, $questions);
         
     } else if ( isset($_POST['update']) ) {
         
@@ -71,7 +70,7 @@ if( !isset( $_POST['category'] ) ) {
             newtest('Update', $user->name(), 
                     $category, $oldname, 
                     $number, $correct, 
-                    $mistake, $questions
+                    $mistake, $questions,
                     $err->getMessage());
 
         }
@@ -107,7 +106,7 @@ if( !isset( $_POST['category'] ) ) {
             newtest('Create', $user->name(), 
                     $category, $name, 
                     $number, $correct, 
-                    $mistake, $questions
+                    $mistake, $questions,
                     $err->getMessage());
 
         }

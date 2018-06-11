@@ -14,7 +14,6 @@
                         "</div>" +
                     "</li>",
         OPTION = "<li> <input type='radio' name='{0}'> <input type='text'> </li>";
-         
     
     var index, number;
     
@@ -34,28 +33,34 @@
         points_output = $('#total-points');
     }
     
+    
+    function questionHandlers(question) {
+        
+        question.find('.plus-option').click(function(event) {
+            var li = $(this).closest('li'),
+                name = li.closest('ul').attr('id'),
+                option = $(OPTION.replace('{0}', name));
+
+            li.before(option);
+        });
+
+
+        question.find('.delete').click(function(event) {
+            question.remove();
+            number--;
+            updateTable();
+        });
+    }
+    
+    
     function plusHandlers() {
         $('.plus-question').click(function(event) {
             var question = $(QUESTION
                              .replace('{0}', index)
                              .replace('{0}', index));
             
+            questionHandlers(question);
             index++;
-            
-            $(question).find('.plus-option').click(function(event) {
-                var li = $(this).closest('li'),
-                    name = li.closest('ul').attr('id'),
-                    option = $(OPTION.replace('{0}', name));
-                
-                li.before(option);
-            });
-            
-            
-            $(question).find('.delete').click(function(event) {
-                question.remove();
-                number--;
-                updateTable();
-            });
             
             $(this).before(question);
             number++;
@@ -65,6 +70,12 @@
         
         if( $('.question').length === 0 ) {
             $('.plus-question').click();
+        } else {
+            
+            $('.question').each(function() {
+                questionHandlers($(this));
+            });
+            
         }
     }
     

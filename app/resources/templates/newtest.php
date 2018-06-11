@@ -1,5 +1,5 @@
 <div class='main-box'>
-    <h1> New Test </h1>
+    <h1> <?php echo $operation; ?> Test </h1>
     <form>
         <table id="form-header">
             <tr>
@@ -8,7 +8,7 @@
             </tr>
              <tr>
                 <td>Category: </td>
-                <td id='category'> <?php echo $category; ?></td>
+                <td id='category'><?php echo $category; ?></td>
             </tr>
             <tr>
                 <td>Test name: </td>
@@ -89,7 +89,7 @@
             <button type="submit" name="<?php echo strtolower($operation); ?>" 
                     value="<?php
                            
-                           if ( $operation === 'Modify' ) {
+                           if ( $operation === 'Update' ) {
                                echo $name;
                            }
                            
