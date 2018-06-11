@@ -167,7 +167,7 @@ function print_questions($questions_json) {
 
 
 function newtest($operation, $creator, $category, $name=null, $number=null, $correct=null, $mistake=null, $questions=null, $err = null) {
-    include('newtest.php');
+    include('testform.php');
 }
 
 

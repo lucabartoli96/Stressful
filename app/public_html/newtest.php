@@ -15,7 +15,7 @@ if ( !$user->is_admin() ) {
     header('location: home.php');
 }
 
-head(array('sections', 'testadmin'), array('utils','testadmin'));
+head(array('sections', 'newtest'), array('utils','newtest'));
 section_head();
 
 if( !isset( $_POST['category'] ) ) {
