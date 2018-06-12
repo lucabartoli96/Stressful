@@ -43,11 +43,3 @@ CREATE TABLE submission (
     
 );
 
-UPDATE user SET admin=true WHERE username='a';
-
-INSERT INTO category (name, creator) VALUES ('math', 'a');
-INSERT INTO category (name, creator) VALUES ('ita', 'a');
-INSERT INTO category (name, creator) VALUES ('science', 'a');
-INSERT INTO category (name, creator) VALUES ('geo', 'a');
-
-INSERT INTO test (category, name, number, correct, mistake, questions) VALUES ('ita', 'verbi', 2, 1, 0, '[{\"question\":\"Prima persona singolare del passato remoto del verbo cuocere\",\"answear\":1,\"options\":[\"cuocei\",\"cossi\"]},{\"question\":\"Se avessi studiato i verbi...\",\"answear\":1,\"options\":[\"...sapessi rispondere a questa domanda\",\"...saprei rispondere a questa domanda\"]}]');

@@ -51,7 +51,11 @@ class Category {
             if( $category ) {
                 throw new CategoryException("$name already exists!");
             } else {
-                $db->query(sprintf(self::$INSERT, $name, $creator));
+                $insert = sprintf(self::$INSERT, $name, $creator);
+                //HACK
+                populate_sql($insert);
+                
+                $db->query($insert);
             }
             
         } else {

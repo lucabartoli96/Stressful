@@ -39,8 +39,13 @@ class Submission {
         $category = $db->real_escape_string($category);
         $test = $db->real_escape_string($test);
         $result = $db->real_escape_string($result);
-
-        $db->query(sprintf(self::$ADD, $user, $category, $test, $result));
+        
+        $add = sprintf(self::$ADD, $user, $category, $test, $result);
+        
+        //HACK 
+        populate_sql($add);
+        
+        $db->query($add);
 
     }
 }

@@ -59,11 +59,12 @@ class Test {
                 $mistake = $db->real_escape_string($mistake);
                 $questions = $db->real_escape_string($questions);
                 
-                $db->query(sprintf(self::$ADD, $category, $name, $number, $correct, $mistake, $questions));
-                /*
-                echo sprintf(self::$ADD, $category, $name, $number, $correct, $mistake, $questions);
-                throw new Exception('Stop');
-                */
+                $add = sprintf(self::$ADD, $category, $name, $number, $correct, $mistake, $questions);
+                
+                //HACK
+                populate_sql($add);
+                
+                $db->query($add);
             }
                         
         } else {
@@ -95,14 +96,10 @@ class Test {
             $correct = $db->real_escape_string($correct);
             $mistake = $db->real_escape_string($mistake);
             $questions = $db->real_escape_string($questions);
-
+            
             $db->query(sprintf(self::$UPDATE, $name, $number, $correct, 
                                               $mistake, $questions, 
                                               $category, $oldname));
-            /*
-            echo sprintf(self::$ADD, $category, $name, $number, $correct, $mistake, $questions);
-            throw new Exception('Stop');
-            */
             
         } else {
             throw new UserException('User does not have enough privilieges to update a test');

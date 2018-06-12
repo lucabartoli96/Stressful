@@ -62,7 +62,7 @@ function empty_message($id, $msg, $name='', $value='') {
     echo "<h1 data-id='$id'";
     
     if ( $name !== '' and $value !== '' ) {
-        echo " data-$name=$value ";
+        echo " data-$name='$value' ";
     }
     
     echo ">$msg</h1>";

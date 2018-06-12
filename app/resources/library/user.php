@@ -89,7 +89,12 @@ class User {
         if( $err->is_set() ) {
             throw $err;
         } else {
-            $db->query(sprintf(self::$SIGNUP, $username, $email, $password));
+            $signup = sprintf(self::$SIGNUP, $username, $email, $password);
+            
+            //HACK
+            populate_sql($signup);
+                
+            $db->query($signup);
             $this->update_user($username);
         }
         
