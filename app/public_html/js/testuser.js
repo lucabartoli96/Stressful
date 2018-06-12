@@ -31,7 +31,7 @@
                 post({
                     'category' : category,
                     'name' : name,
-                    'submit' : JSON.stringify(ans)
+                    'submitted' : JSON.stringify(ans)
                 });
             }
             
@@ -44,7 +44,7 @@
             event.preventDefault();
             
             if( confirm('You will lose all your answeara, are you sure you want to quit') ) {
-                var category = $(this).data('category');
+                var category = $("button[name='submit']").data('category');
                 
                 post({
                    'category' : category 
@@ -57,11 +57,18 @@
         
     }
     
-
+    function homeButton() {
+        $("button[name='home']").click(function() {
+            post({}, getLocation() + '/home.php');
+        });
+    }
+    
+    
     $(function() {
         
         submitHandler();
         quitHandler();
+        homeButton();
         
     });
     

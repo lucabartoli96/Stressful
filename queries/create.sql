@@ -35,6 +35,7 @@ CREATE TABLE submission (
     user VARCHAR(100),
     test VARCHAR(100),
     category VARCHAR(100),
+    result VARCHAR(5),
     date TIMESTAMP,
     FOREIGN KEY(user) REFERENCES user(username) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY(category) REFERENCES category(name) ON DELETE CASCADE ON UPDATE CASCADE,

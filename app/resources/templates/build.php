@@ -188,6 +188,13 @@ function print_questions($questions_json) {
 }
 
 
+function result_table($category, $name, $answeared, $number, $points, $total_points, $result) {
+    
+    include('result.php');
+    
+}
+
+
 
 
 function newtest($operation, $creator, $category, $name=null, $number=null, $correct=null, $mistake=null, $questions=null, $err = null) {

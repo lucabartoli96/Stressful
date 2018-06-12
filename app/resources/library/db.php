@@ -5,6 +5,7 @@ require_once('exceptions.php');
 require_once('user.php');
 require_once('test.php');
 require_once('category.php');
+require_once('submission.php');
 
 class Session {
     
