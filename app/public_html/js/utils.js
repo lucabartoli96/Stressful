@@ -39,6 +39,10 @@ function getLocation() {
      return location.substr(0, location.lastIndexOf('/'));
 }
 
+function setLocation(page) {
+    window.location.href = getLocation() + '/' + page + '.php';
+}
+
 
 function errMsg(msg) {
     return '<div class="alert alert-warning">' + msg + '</div>';

@@ -8,8 +8,8 @@ class UserException extends Exception {
         $this->stack = null;
     }
     
-    public function err($name) {
-        return isset($this->stack[$name]);
+    public function is_set() {
+        return $this->stack !== null;
     }
     
     public function push($name, $message) {
@@ -18,23 +18,16 @@ class UserException extends Exception {
             $this->stack = array();
         }
         
-        if ( !$this->err($name) ) {
-            $this->stack[$name] = array();
-        }
+        $this->stack[$name] = $message;
+    }
+    
+    public function to_json() {
         
-        array_push($this->stack[$name], $message);
-    }
-    
-    public function get($name) {
-        if ( $this->err($name) ) {
-            return $this->stack[$name];
-        } else {
-            return null;
-        }
-    }
-    
-    public function is_set() {
-        return $this->stack !== null;
+        $err = array(
+            "error" => $this->stack
+        );
+        
+        return json_encode($err);
     }
 }
 
@@ -43,12 +36,22 @@ class CategoryException extends Exception {
     public function __construct($message) {
         parent::__construct($message);
     }
+    
+    public function to_json() {
+        $message = $this->getMessage();
+        return "{'error' : $message }";
+    }
 }
 
 class TestException extends Exception {
 
     public function __construct($message) {
         parent::__construct($message);
+    }
+    
+    public function to_json() {
+        $message = $this->getMessage();
+        return "{'error' : $message }";
     }
 }
 

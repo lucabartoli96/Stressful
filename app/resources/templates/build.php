@@ -11,9 +11,9 @@ function foot() {
     echo "</body> </html> ";
 }
 
-function login_form_head($action) {
-    echo '<div class="form-container"> <div class="form">' .
-        '<form method="POST" action="'.$action.'">';
+function login_form_head($id) {
+    echo "<div class='form-container'> <div class='form'>" .
+        "<form id='$id'>";
 }
 
 function login_form_foot() {

@@ -1,175 +1,112 @@
 (function() {
     
+    function buildTable(name, content, admin) {
     
-    var MODAL = "<div class='shadow'>" + 
-                    "<form method='post' id='modal'>" + 
-                       "<span id='close'>&times;</span>" + 
-                       "<input type='text' name='name' placeholder='name'> " + 
-                       "<button type='submit' name='{0}'> {1} </button>" + 
-                    "</form>" + 
-                "</div>";
-    
-    
-    function clickTable() {
+        var table = "<div class='wrap-table'>" +
+                    "<div class='table'>" +
+                        "<table id='" + name + "'>" + 
+                            "<thead>" +
+                                "<tr class='head'>" + 
+                                    "<th> </th>";
+                                
         
-        $('table tbody tr').click(function (event) {
+        var first = true;
+        
+        $(Object.keys(content[0])).each(function(idx, str) {
+            if ( !first ) {
+                table += "<th>" + str + "</th>";   
+            } else {
+                first = false;
+            }
+        });
+
+        if ( admin ) {
+            table += "<th class='last_column'></th>";
+        }
+        
+        table += '</tr> </thead> <tbody>';
+        
+        $(content).each(function(idx, row) {
+                        
+            table += '<tr>';
             
-            var table = $(this).closest('table'),
-                id = table.data('id'),
+            first = true;
+            
+            $.each(row, function(key, value) {
+
+                if ( first ) {
+                    table += "<td class='column1'>" + value + "</td>";
+                    first = false;
+                } else {
+                    table += "<td>" + value + "</td>";
+                }
+            });
+        
+            if ( admin ) {
+                table += "<td class='last_column'>" +
+                            "<button class='modify'><img src='img/modify.png'></button>" +
+                            "<button class='delete'><img src='img/delete.png'></button>" +
+                        "</td>";
+            }
+                        
+            table += "</tr>";
+            
+        });
+    
+        table +=  "</tbody>" +
+                "</table>" +
+            "</div>" +
+        "</div>";
+        
+        return table;
+    }
+    
+    function attachHandlers(table) {
+        
+        table.find('tbody tr').click(function() {
+            
+            var id = $('table').attr('id'),
                 value = $(this).find('td:eq(0)').html();
             
-            if ( id !== 'test' ) {
-                var params = {};
-                params[id] = value;
-                post(params);
-            } else {
-                post({
-                    'name' : value,
-                    'category' : table.data('category')
-                },
-                getLocation() + '/testuser.php');
+            switch ( id ) {
+                case 'all':
+                    requireTable('category', value);
+                    break;
+                case 'category':
+                    requireTest('test', value);
+                    break;
             }
             
         });
         
     }
     
-    function adminButtons() {
+    function requireTable(name, value) {
         
-        $('button.modify').click(function (event) {
-            event.stopPropagation();
+        var params = {};
+        params[name] = value || true;
+        
+        $.post(STRESSFUL_API, params).done(function(data) {
             
-            var table = $(this).closest('table'),
-                id = table.data('id');
+            alert(data);
             
-            if ( id !== 'test' ) {
-                var modal = $(MODAL.replace('{0}', 'modify')
-                               .replace('{1}', 'Modify')),
-                form = modal.find('form');
+            var rep = JSON.parse(data);
             
-                formEvents(modal);
-
-                var oldname = $(this).closest('tr').find('td:eq(0)').html();
-
-                form.find("button").val(oldname);
-
-                $('header').after(modal);
-                
+            if ( rep.error ) {
+                $(".container-section").html("<h1>" + rep.error + "</h1>");
             } else {
-                
-                var name = $(this).closest('tr').find('td:eq(0)').html();
-                
-                post({
-                    'modify' : true,
-                    'category' : table.data('category'),
-                    'name' : name
-                }, 
-                getLocation() + "/testadmin.php");
-                
+                var table = $(buildTable(name, rep.content, rep.admin));
+                attachHandlers(table);
+                $(".container-section").html(table);
             }
             
         });
-        
-        $('button.delete').click(function (event) {
-            event.stopPropagation();
-            var name = $(this).closest('tr').find('td:eq(0)').html(),
-                table = $(this).closest('table'),
-                id = table.data('id');
-            
-            if (confirm("Are you sure you want to delete " + name + " " + id + "?")) {
-                
-                var params = {};
-
-                if( id === 'test' ) {
-                    params['category'] = table.data('category');
-                }
-                
-                params['delete'] = name; 
-                post(params);
-            }
-        });
-        
-    }
-    
-    
-    function backButton() {
-        
-        $('#back').click(function() {
-            post();
-        });
-        
-    }
-    
-    
-    function formEvents(modal) {
-        
-        modal = modal || $('.shadow');
-        
-        var form = modal.find('form');
-        
-        form.submit(function(event) {
-            
-            $('.alert').remove();
-            
-            var input = $(this).find("input[name='name']");
-
-            if ( input.val() === '' ) {
-                event.preventDefault();
-                input.after(errMsg('name is required'));
-            }
-
-        });
-
-        $(form).find('#close').click(function() {
-
-            modal.remove();
-
-        });
-        
-    }
-    
-    
-    function plusButton() {
-        
-        $('#plus').click(function() {
-            
-            var tag = null;
-            
-            if( $('.section').find('table').length ) {
-                tag = $('.section').find('table');
-            } else {
-                tag = $('.section').find('h1');
-            }
-            
-            var id = tag.data('id');
-            
-            if ( id === 'category' ) {
-                var modal = $(MODAL.replace('{0}', 'add')
-                               .replace('{1}', 'Add'));
-            
-                formEvents(modal);
-
-                $('header').after(modal);
-                
-            } else {
-                
-                post({
-                    'category' : tag.data('category')
-                }, 
-                getLocation() + "/testadmin.php");
-            }
-            
-        });
-        
     }
     
     
     $(function() {
-       clickTable();
-       adminButtons();
-       backButton();
-       plusButton();
-       formEvents();
+        
+        requireTable('all');
         
     });
     

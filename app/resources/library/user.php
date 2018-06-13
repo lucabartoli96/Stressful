@@ -11,7 +11,6 @@ class User {
     //private static $instance = null;
 
     private $user = null;
-    private $logged = false;
     
     private function __construct() { }
     
@@ -179,7 +178,7 @@ class User {
     
     
     public function logout() {
-        $this->logged = false;
+        $this->user = null;
     }
     
     

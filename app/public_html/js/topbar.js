@@ -6,15 +6,22 @@
         
         $('.logout').click(function() {
             
-            var URL = getLocation() + "/login.php";
-            
-            post({
-                'logout' : 'true'
-            }, URL);
+            $.post( STRESSFUL_API, {"logout" : "true"} )
+            .done(function(data) {
+                
+                var rep = JSON.parse(data);
+                
+                if ( rep.logout ) {
+                    setLocation('login');
+                } else {
+                    alert('Server error!');
+                }
+            });
             
         });
         
     }
+    
 
 	$(function() {
 
