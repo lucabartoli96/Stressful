@@ -18,49 +18,49 @@ section_head();
 ?>
 <div class="form-container"> 
     <div class="form">
-        <form method="POST" action="<?php echo PUBLIC_HTML_PATH . '/profile.php'; ?>">
+        <form>
             
             <?php
             
-            if( isset($_POST['modify']) ) {
-                profile_inputs($user->name(), $user->email());
-            } else if( isset($_POST['save']) ) {
-                
-                $err = null;
-                        
-                $username = "";
-                $email = "";
-                $password = "";
-                    
-                if ( isset($_POST['username']) ) {
-                    $username = $_POST['username'];
-                }
-
-                if ( isset($_POST['email']) ) {
-                    $email = $_POST['email'];
-                }
-
-                if ( isset($_POST['password']) ) {
-                    $password = $_POST['password'];
-                }
-
-                try {
-                    $user->change($username, $email, $password);    
-                } catch (UserException $err) {
-                    //DO NOTHING
-                }
-
-                
-                if ( $err ) {
-                    profile_inputs($username, $email, $err);
-                } else {
-                    profile_desc($user);  
-                }
-                  
-            } else {
-                profile_desc($user); 
-            }
-            
+//            if( isset($_POST['modify']) ) {
+//                profile_inputs($user->name(), $user->email());
+//            } else if( isset($_POST['save']) ) {
+//                
+//                $err = null;
+//                        
+//                $username = "";
+//                $email = "";
+//                $password = "";
+//                    
+//                if ( isset($_POST['username']) ) {
+//                    $username = $_POST['username'];
+//                }
+//
+//                if ( isset($_POST['email']) ) {
+//                    $email = $_POST['email'];
+//                }
+//
+//                if ( isset($_POST['password']) ) {
+//                    $password = $_POST['password'];
+//                }
+//
+//                try {
+//                    $user->change($username, $email, $password);    
+//                } catch (UserException $err) {
+//                    //DO NOTHING
+//                }
+//
+//                
+//                if ( $err ) {
+//                    profile_inputs($username, $email, $err);
+//                } else {
+//                    profile_desc($user);  
+//                }
+//                  
+//            } else {
+//                profile_desc($user); 
+//            }
+//            
             ?>
         </form>
     </div>

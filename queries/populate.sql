@@ -5,3 +5,7 @@ INSERT INTO user (username, email, password) VALUES ('utente', 'utente@mail.de',
 
 INSERT INTO category (name, creator) VALUES ('math', 'a');INSERT INTO category (name, creator) VALUES ('ita', 'b');
 INSERT INTO category (name, creator) VALUES ('music', 'b');
+INSERT INTO category (name, creator) VALUES ('cacca', 'a');
+INSERT INTO category (name, creator) VALUES ('re', 'a');
+INSERT INTO submission (user, category, test, result) VALUES ('a', 'ita', '', '0%') ;
+INSERT INTO category (name, creator) VALUES ('cacca', 'a');

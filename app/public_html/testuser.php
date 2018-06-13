@@ -20,7 +20,7 @@ if( !isset( $_POST['category'] ) ) {
 } else {
     
     $category = $_POST['category'];
-    $name = $_POST['name'];
+    $name = $_POST['test'];
     
     $test = Test::get()->getTest($category, $name);
     
@@ -32,7 +32,7 @@ if( !isset( $_POST['category'] ) ) {
         $mistake = $test['mistake'];
         
         $submitted = json_decode($_POST['submitted'], true);
-        $questions = json_decode($test['questions'], true);
+        $questions = json_decode($_POST['questions'], true);
         
         $points = 0;
         $answeared = 0;

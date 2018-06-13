@@ -50,14 +50,6 @@ function section_foot() {
     echo "</div> </div>";
 }
 
-function back_button() {
-    echo "<button id='back' class='home-button' > <img src='img/back.png' /> </button>";    
-}
-
-function plus_button() {
-    echo "<button id='plus' class='home-button' > <img src='img/plus.png' /> </button>";
-}
-
 function empty_message($id, $msg, $name='', $value='') {
     echo "<h1 data-id='$id'";
     

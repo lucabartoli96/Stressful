@@ -38,8 +38,11 @@ class CategoryException extends Exception {
     }
     
     public function to_json() {
-        $message = $this->getMessage();
-        return "{'error' : $message }";
+        $err = array(
+            "error" => $this->getMessage()
+        );
+        
+        return json_encode($err);
     }
 }
 
@@ -50,8 +53,11 @@ class TestException extends Exception {
     }
     
     public function to_json() {
-        $message = $this->getMessage();
-        return "{'error' : $message }";
+        $err = array(
+            "error" => $this->getMessage()
+        );
+        
+        return json_encode($err);
     }
 }
 

@@ -37,9 +37,11 @@ if ( !$user->is_logged() ) {
                 try {
                     if ( isset($_POST['delete']) ) {
                         Category::get()->delete($_POST['delete']);
+                        echo '{"deleted": true}';
                     } else if( isset($_POST['add']) ){
                         try {
                             Category::get()->add($_POST['name'], $user->name());
+                            echo '{"added": true}';
                         } catch ( CategoryException $err ) {
                             echo $err->to_json();
                         }
@@ -48,6 +50,7 @@ if ( !$user->is_logged() ) {
                         $name = $_POST['name'];
                         try {
                             Category::get()->change_name($old_name, $name);
+                            echo '{"modified": true}';
                         } catch ( CategoryException $err ) {
                             echo $err->to_json();
                         }
@@ -57,17 +60,14 @@ if ( !$user->is_logged() ) {
                 }
             } else {
                 $all = Category::get()->all();
-                $rep = null;
+                $rep = array( 
+                    "admin" => $user->is_admin(),
+                );
 
                 if ( empty($all) ) {
-                    $rep = array( 
-                        "error" => "No category to show"
-                    );
+                    $rep["error"] = "No category to show";
                 } else  {
-                    $rep = array( 
-                        "admin" => $user->is_admin(),
-                        "content" => $all
-                    );
+                    $rep["content"] = $all;
                 }
 
                 echo json_encode($rep);
@@ -91,23 +91,64 @@ if ( !$user->is_logged() ) {
                 
             } else {
                 $all = Test::get()->all($category);
-                $rep = null;
+                $rep = array( 
+                    "admin" => $user->is_admin(),
+                );
 
                 if ( empty($all) ) {
-                    $rep = array( 
-                        "error" => "No test to show inside $category"
-                    );
+                    $rep["error"] = "No category to show";
                 } else  {
-                    $rep = array( 
-                        "admin" => $user->is_admin(),
-                        "content" => $all
-                    );
+                    $rep["content"] = $all;
                 }
 
                 echo json_encode($rep);
             }
             
-        } else if ( isset($_POST['test']) ) {
+        } else if ( isset($_POST['submission']) ) {
+            
+            $all = Submission::get()->all($user->name());
+            
+            $rep = array( 
+                "admin" => $user->is_admin(),
+            );
+
+            if ( empty($all) ) {
+                $rep["error"] = "No submitted test to show";
+            } else  {
+                $rep["content"] = $all;
+            }
+
+            echo json_encode($rep);
+        } else if ( isset($_POST['profile']) ) {
+            
+            $err = null;
+            
+            if ( isset($_POST['modify']) ) {
+                
+                $password = '';
+                
+                if ( isset($_POST['password']) ) {
+                    $password = $_POST['password'];
+                }
+                
+                try {
+                    $user->change($_POST['name'], $_POST['email'], $password);
+                } catch( UserException $err) {
+                    echo $err->to_json();
+                }
+            }
+            
+            if ( !$err ) {
+                
+                $rep = array(
+                    "name" => $user->name(),
+                    "email" => $user->email(),
+                    "since" => $user->since()
+                );
+
+                echo json_encode($rep);
+            }
+        
             
         }
         

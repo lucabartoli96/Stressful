@@ -41,14 +41,12 @@
             
             var params = getParams();
             
-            alert(JSON.stringify(params));
-            
             if ( params !== null ) {
             
                 $.post(STRESSFUL_API, params)
                 .done(function(data) {
                     
-                    alert(data);
+                    if (LOG_ENABLED) { alert(data); }
                     
                     var rep = JSON.parse(data);
 
