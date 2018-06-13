@@ -1,5 +1,8 @@
 
 
+var STRESSFUL_API = "http://localhost/Stressful/resources/library/stressful_api.php";
+
+
 function addHiddenInput(form, name, value) {
 
     var hiddenField = $("<input type='hidden' >");
