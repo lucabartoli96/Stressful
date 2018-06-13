@@ -5,3 +5,5 @@ INSERT INTO user (username, email, password) VALUES ('utente', 'utente@mail.de',
 
 INSERT INTO category (name, creator) VALUES ('math', 'a');INSERT INTO category (name, creator) VALUES ('ita', 'b');
 INSERT INTO category (name, creator) VALUES ('music', 'b');
+INSERT INTO test (category, name, number, correct, mistake, questions) VALUES ('ita', 'cacca', 1, 1, 0, '[{\"question\":\"AAA\",\"answear\":1,\"options\":[\"ss\",\"ddddd\"]}]') ;
+INSERT INTO test (category, name, number, correct, mistake, questions) VALUES ('ita', 'sdf', 1, 1, 0, '[{\"question\":\"ssd\",\"answear\":1,\"options\":[\"ffgf\",\"fdfd\"]}]') ;
