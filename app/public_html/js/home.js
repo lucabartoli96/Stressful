@@ -212,7 +212,7 @@
             
             var rep = JSON.parse(data);
             
-            var admin = rep.admin,
+            var admin = Number(rep.admin),
                 str = "";
             
             if ( state === 'category' ) {

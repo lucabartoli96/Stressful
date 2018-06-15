@@ -129,8 +129,7 @@
                 });
                 
                 var button = $("button[name='submit']");
-                
-                var result = "" + (Math.ceil(points / (number*correct))*100) + "%";
+                var result = "" + (points /parseFloat(number*correct)*100) + "%";
                 
                 $.post(STRESSFUL_API, {
                     'submission' : true,

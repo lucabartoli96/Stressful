@@ -18,7 +18,7 @@
             if ( rep.error ) {
                 content = "<h1>" + rep.error + "</h1>";
             } else {
-                content = buildTable(rep.content, rep.admin);
+                content = buildTable(rep.content, false);
             }
             
             $('.container-section').html(content);

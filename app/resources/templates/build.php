@@ -20,18 +20,6 @@ function login_form_foot() {
     echo '</form></div></div>';
 }
 
-function print_if_err($err, $name) {
-    if(isset($err) and $err->err($name)) {
-      foreach ( $err->get($name) as $msg) {
-          login_err($msg);
-      }
-  }
-}
-
-function login_err($msg) {
-    echo "<div class='alert alert-warning'>$msg</div>";
-}
-
 function topbar($sections, $active = null) {
 
     if( !isset($active) ) {
@@ -48,27 +36,6 @@ function section_head() {
 
 function section_foot() {
     echo "</div> </div>";
-}
-
-function empty_message($id, $msg, $name='', $value='') {
-    echo "<h1 data-id='$id'";
-    
-    if ( $name !== '' and $value !== '' ) {
-        echo " data-$name='$value' ";
-    }
-    
-    echo ">$msg</h1>";
-}
-
-function modal($operation, $err, $value = null) {
-    include("modal.php");
-}
-
-
-function result_table($category, $name, $answeared, $number, $points, $total_points, $result) {
-    
-    include('result.php');
-    
 }
 
 
