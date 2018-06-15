@@ -73,6 +73,34 @@ if ( !$user->is_logged() ) {
                 echo json_encode($rep);
             }
             
+        } else if ( isset($_POST['submission']) ) {
+            
+            if ( isset( $_POST['add']) ) {
+                Submission::get()->add(
+                    User::get()->name(),
+                    $_POST['category'],
+                    $_POST['add'],
+                    $_POST['result']
+                );
+                
+                echo '{"submitted" : true }';
+                
+            } else {
+                $all = Submission::get()->all($user->name());
+            
+                $rep = array( 
+                    "admin" => $user->is_admin(),
+                );
+
+                if ( empty($all) ) {
+                    $rep["error"] = "No submitted test to show";
+                } else  {
+                    $rep["content"] = $all;
+                }
+
+                echo json_encode($rep);
+            }
+            
         } else if ( isset($_POST['test']) ) {
             
             if ( isset($_POST['update']) ) {
@@ -116,7 +144,7 @@ if ( !$user->is_logged() ) {
                 
                 echo '{"added": true}';
                 
-            }  else {
+            } else {
                 $test = Test::get()->getTest($_POST['category'], $_POST['test']);
                 
                 $test['questions'] = json_decode($test['questions']);
@@ -155,21 +183,6 @@ if ( !$user->is_logged() ) {
                 echo json_encode($rep);
             }
             
-        } else if ( isset($_POST['submission']) ) {
-            
-            $all = Submission::get()->all($user->name());
-            
-            $rep = array( 
-                "admin" => $user->is_admin(),
-            );
-
-            if ( empty($all) ) {
-                $rep["error"] = "No submitted test to show";
-            } else  {
-                $rep["content"] = $all;
-            }
-
-            echo json_encode($rep);
         } else if ( isset($_POST['profile']) ) {
             
             if ( isset($_POST['modify']) ) {

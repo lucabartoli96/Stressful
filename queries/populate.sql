@@ -11,3 +11,9 @@ INSERT INTO submission (user, category, test, result) VALUES ('a', 'ita', '', '0
 INSERT INTO category (name, creator) VALUES ('cacca', 'a');
 INSERT INTO category (name, creator) VALUES ('pollo', 'a');
 INSERT INTO test (category, name, number, correct, mistake, questions) VALUES ('math', 'derivatives', 1, 1, 0, '[{\"question\":\"das\",\"answear\":0,\"options\":[\"dsad\",\"sdasdas\"]}]') ;
+INSERT INTO submission (user, category, test, result) VALUES ('a', 'math', 'derivatives', '6%') ;
+INSERT INTO submission (user, category, test, result) VALUES ('a', 'math', 'derivatives', '6%') ;
+INSERT INTO submission (user, category, test, result) VALUES ('a', 'math', 'derivatives', '1%') ;
+INSERT INTO submission (user, category, test, result) VALUES ('a', 'math', 'derivatives', '100%') ;
+INSERT INTO submission (user, category, test, result) VALUES ('a', 'ita', 'cacca', '0%') ;
+INSERT INTO submission (user, category, test, result) VALUES ('a', 'ita', 'sdf', '100%') ;
