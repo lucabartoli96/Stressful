@@ -124,7 +124,7 @@ class Test {
     
     public function getTest($category, $name) {
         $db = Connection::get();
-        return $db->query(sprintf(self::$GET, $category, $name))->fetch_array();
+        return $db->query(sprintf(self::$GET, $category, $name))->fetch_assoc();
     }
     
 }

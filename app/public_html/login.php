@@ -4,11 +4,12 @@ require_once(TEMPLATES_PATH . '/build.php');
 require_once(LIBRARY_PATH . '/db.php');
 
 head(array('login'), array('utils', 'index'));
-login_form_head('login');
 
 if ( User::get()->is_logged() ) {
     header('location: home.php');
 }
+
+login_form_head('login');
 
 ?>
 

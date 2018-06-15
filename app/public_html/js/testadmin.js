@@ -2,9 +2,8 @@
     
     
     var QUESTION = "<li class='question'>" +
-                        "<input type='text'>" + 
+                        "<input class='quest-sentence' type='text'>" + 
                         "<ul id='question-{0}' class='fields'>" + 
-                            "<li> <input type='radio' name='question-{0}'> <input type='text'> </li>" + 
                             "<li> <button class='plus-option'> <img src='img/plus.png' /> </button> </li>" + 
                         "</ul>" + 
                         "<div class='buttons'>" +
@@ -15,7 +14,7 @@
                     "</li>",
         OPTION = "<li> <input type='radio' name='{0}'> <input type='text'> </li>";
     
-    var index, number;
+    var index=0, number=0;
     
     var question_form, number_output, points_output;
     
@@ -27,21 +26,106 @@
     }
     
     function init() {
-        index = number = $('.question').length;
         question_form = $('#question-form');
         number_output = $('#questions-number');
         points_output = $('#total-points');
     }
     
+    function initPage() {
+        
+        var button = $("button[type='submit']:not(button[name='quit'])");
+        
+        var operation = button.attr('name');
+        
+        if ( operation === 'update' ) {
+            var name = button.val();
+            
+            $.post(STRESSFUL_API, {
+                'category' : $('#category').html().trim(),
+                'test' : name
+            }).done(function(data) {
+                
+                if ( LOG_ENABLED ) { alert(data); }
+                
+                var rep = JSON.parse(data);
+                
+                if( rep.error ) {
+                    alert(rep.error);
+                } else {
+                    fillFields(rep);
+                    plusHandlers();
+                }
+                
+            });
+            
+        } else {
+            addQuestion();
+            plusHandlers();
+        }
+    }
+    
+    function addOption(question, text, isAns) {
+        
+        var option = $(OPTION.replace('{0}', $(question).find('.fields').attr('id')));
+        
+        if ( text ) {
+            $(option).find("input[type='text']").attr('value', text);
+            if ( isAns ) {
+                $(option).find("input[type='radio']").attr('checked', true);
+            }
+        }
+        
+        $(question).find('.plus-option')
+            .closest('li').before(option);
+        
+    }
+    
+    function addQuestion(sentence, answear, options) {
+        
+        index++;
+        number++;
+        
+        var question = $(QUESTION.replace('{0}', index));
+        
+        if ( sentence ) {
+            $(question).find('.quest-sentence').attr('value', sentence);
+        }
+        
+        if ( answear !== undefined && options !== undefined ) {
+            
+            $(options).each(function(i, text) {
+                addOption(question, text, answear === i);
+                
+            });
+        } else {
+            addOption(question);
+        }
+        
+        questionHandlers(question);
+        
+        $('.plus-question').before(question);
+        
+    }
+    
+    function fillFields(content) {
+        
+        number_output.html(content.number);
+        $('#correct').val(content.correct);
+        $('#mistake').val(content.mistake);
+        
+        $(content.questions).each(function(i, question) {
+            addQuestion(question.question, 
+                        question.answear,
+                        question.options);
+        });
+        
+    }
     
     function questionHandlers(question) {
         
         question.find('.plus-option').click(function(event) {
-            var li = $(this).closest('li'),
-                name = li.closest('ul').attr('id'),
-                option = $(OPTION.replace('{0}', name));
-
-            li.before(option);
+            event.preventDefault();
+            addOption(question);
         });
 
 
@@ -55,28 +139,10 @@
     
     function plusHandlers() {
         $('.plus-question').click(function(event) {
-            var question = $(QUESTION
-                             .replace('{0}', index)
-                             .replace('{0}', index));
-            
-            questionHandlers(question);
-            index++;
-            
-            $(this).before(question);
-            number++;
+            addQuestion();
             updateTable();
             
         });
-        
-        if( $('.question').length === 0 ) {
-            $('.plus-question').click();
-        } else {
-            
-            $('.question').each(function() {
-                questionHandlers($(this));
-            });
-            
-        }
     }
     
     
@@ -89,6 +155,10 @@
     }
     
     
+    function tableErrMsg(msg) {
+        return "<tr><td></td><td>" + errMsg(msg) + "</td></tr>"
+    }
+    
     function submitHandlers() {
         
         $('form').submit(function(event) {
@@ -99,7 +169,7 @@
             event.preventDefault();
             post({
                'category' : $('#category').html()
-            }, getLocation() + '/home.php');
+            }, 'home');
         });
         
         $("button[name='create'], button[name='update']").click(function(event) {
@@ -114,7 +184,7 @@
             
             if ( name === '' ) {
                 $('#name').closest('tr')
-                    .after("<tr><td></td><td>" + errMsg("name is required") + "</td></tr>");
+                    .after(tableErrMsg("name is required"));
                 return;
             }
             
@@ -179,19 +249,33 @@
             
             if ( !err_flag ) {
                 var params = {
-                        'name'     : name,
+                        'test'     : name,
                         'number'   : list.length,
                         'correct'  : correct,
                         'mistake'  : mistake,
                         'category' : category,
                         'questions': JSON.stringify(list)
                     };
-                
+                    
                 if ( $(this).attr('name') === 'update' ) {
                     params['update'] = $(this).val();
+                } else {
+                    params['add'] = true;
                 }
                 
-                post(params);
+                $.post(STRESSFUL_API, params)
+                .done(function(data) {
+                    
+                    var rep = JSON.parse(data);
+                    
+                    if ( rep.error ) {
+                        $('#name').closest('tr')
+                            .after(tableErrMsg(rep.error));
+                    } else {
+                        post({}, 'home');
+                    }
+                    
+                });
             }
             
             
@@ -200,12 +284,11 @@
         
     }
     
-    
     $(function() {
         
         init();
+        initPage();
         submitHandlers();
-        plusHandlers();
         tableHandlers();
     });
     

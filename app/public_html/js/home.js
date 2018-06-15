@@ -126,18 +126,15 @@
                 
             } else {
                 
-                post({
-                    'category' : tag.data('category')
-                }, 
-                getLocation() + "/testadmin.php");
+                requireTestAdmin('add');
+
             }
             
         });
         
         
     }
-    
-    
+      
     function attachHandlers(table) {
         
         table.find('tbody tr').click(function() {
@@ -175,13 +172,7 @@
             } else {
                 
                 var name = $(this).closest('tr').find('td:eq(0)').html();
-                
-                post({
-                    'modify' : true,
-                    'category' : table.data('category'),
-                    'name' : name
-                }, 
-                getLocation() + "/testadmin.php");
+                requireTestAdmin('update', name);
                 
             }
             
@@ -206,7 +197,6 @@
         
         
     }
-    
     
     function requireTable(name, value) {    
         
@@ -248,18 +238,29 @@
             homeButtons();
         });
     }
-    
-    
+      
     function requireTest(value) {
-        //TODO!
         post({
             'category' : category,
             'test' : value
         },
-        getLocation() + '/testuser.php');
+        'testuser');
         
     }
     
+    function requireTestAdmin( operation, value ) {
+        
+        var params = {};
+        params['category'] = category;
+        params[operation] = true;
+        
+        if ( value ) {
+            params['name'] = value;
+        }
+        
+        post(params, 'testadmin');
+        
+    }
     
     $(function() {
         

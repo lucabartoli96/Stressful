@@ -14,7 +14,7 @@ if ( !$user->is_logged() ) {
     
     try {
         if(isset($_POST['login'])) {
-             User::get()->login($_POST['password'], $_POST['username']);
+             User::get()->login($_POST['username'], $_POST['password']);
         } else if(isset($_POST['signup'])) {
              User::get()->signup($_POST['username'], $_POST['email'], $_POST['password']);
         }
@@ -73,6 +73,57 @@ if ( !$user->is_logged() ) {
                 echo json_encode($rep);
             }
             
+        } else if ( isset($_POST['test']) ) {
+            
+            if ( isset($_POST['update']) ) {
+        
+                try {
+
+                    Test::get()->update(
+                        $_POST['category'],
+                        $_POST['update'],
+                        $_POST['test'],
+                        $_POST['number'],
+                        $_POST['correct'],
+                        $_POST['mistake'],
+                        $_POST['questions']
+                    );
+
+                    echo '{"modified": true}';
+
+                } catch ( TestException $err ) {
+                    
+                    echo $err->to_json();
+                }
+
+
+            } else if (isset($_POST['add']) ) {
+
+                try {
+
+                    Test::get()->add(
+                        $_POST['category'],
+                        $_POST['test'],
+                        $_POST['number'],
+                        $_POST['correct'],
+                        $_POST['mistake'],
+                        $_POST['questions']
+                    );
+
+                } catch ( TestException $err ) {
+                    echo $err->to_json();
+                }
+                
+                echo '{"added": true}';
+                
+            }  else {
+                $test = Test::get()->getTest($_POST['category'], $_POST['test']);
+                
+                $test['questions'] = json_decode($test['questions']);
+                
+                echo json_encode($test);
+            }
+            
         } else if ( isset($_POST['category']) ) {
             $category = $_POST['category'];
     
@@ -96,7 +147,7 @@ if ( !$user->is_logged() ) {
                 );
 
                 if ( empty($all) ) {
-                    $rep["error"] = "No category to show";
+                    $rep["error"] = "No test to show inside $category";
                 } else  {
                     $rep["content"] = $all;
                 }
@@ -121,8 +172,6 @@ if ( !$user->is_logged() ) {
             echo json_encode($rep);
         } else if ( isset($_POST['profile']) ) {
             
-            $err = null;
-            
             if ( isset($_POST['modify']) ) {
                 
                 $password = '';
@@ -133,13 +182,13 @@ if ( !$user->is_logged() ) {
                 
                 try {
                     $user->change($_POST['name'], $_POST['email'], $password);
+                    echo '{"modified" : true }';
+                    
                 } catch( UserException $err) {
                     echo $err->to_json();
                 }
-            }
-            
-            if ( !$err ) {
                 
+            } else {
                 $rep = array(
                     "name" => $user->name(),
                     "email" => $user->email(),

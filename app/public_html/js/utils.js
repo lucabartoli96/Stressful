@@ -14,14 +14,14 @@ function addHiddenInput(form, name, value) {
 }
 
 
-function post(params, URL) {
+function post(params, file) {
 
     var form = $('<form> </form>');
     form.attr('method', 'POST');
     form.attr("style", 'display: none');
     
-    if(URL) {
-        form.attr("action", URL);
+    if(file) {
+        form.attr("action", getLocation() + '/' + file + '.php');
     }
 
     for(var key in params) {

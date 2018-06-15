@@ -189,7 +189,7 @@ function result_table($category, $name, $answeared, $number, $points, $total_poi
 
 
 
-function newtest($operation, $creator, $category, $name=null, $number=null, $correct=null, $mistake=null, $questions=null, $err = null) {
+function newtest($operation, $category, $name=null) {
     include('testtools.php');
 }
 

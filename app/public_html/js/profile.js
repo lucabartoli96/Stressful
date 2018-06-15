@@ -3,14 +3,91 @@
     
     var name, email, since;
     
-    function descEvents() {
+    
+    function getParams() {
+        $(".alert").remove();
+            
+        var inputs = $('input:not(input:password)').filter(function() { return $(this).val() == ""; });
+
+        if(inputs.length > 0) {
+            inputs.each(function() {
+                $(this).after(errMsg($(this).attr("placeholder") + " is required")); 
+                return null;
+            });
+        }
+
+        var passwords = $("input:password");
+
+        if ($(passwords[0]).val() != "") {
+            if($(passwords[1]).val() === "")  {
+                $(passwords[1]).after(errMsg("password confirmation is required")); 
+            } else if ($(passwords[0]).val() != $(passwords[1]).val()) {
+               $(passwords[1]).after(errMsg("Paswords mismatch"));
+                return null;
+            }
+        }
+
+        var params = {
+            'profile' : true,
+            'modify': name, 
+            'name' : $("input[name='username']").val().trim(),
+            'email': $("input[name='email']").val().trim()
+        };
+
+        if ( $(passwords[0]).val() !== "" ) {
+            params['password'] = $(passwords[0]).val() 
+        }
         
-        $('button').submit(function(event) {
+        return params;
+    }
+    
+    function formEvents() {
+        
+        $('form').submit(function(event) {
             event.preventDefault();
-            switchTo('inputs');
+            
+            if ( $('button').html() == 'Save' ) {
+                
+                var params;
+                
+                if ( params = getParams() ) {
+                    
+                    $.post(STRESSFUL_API, params).done(function(data) {
+
+                        if ( LOG_ENABLED ) { alert(data) };
+
+                        var rep = JSON.parse(data);
+
+                        if ( rep.error ) {
+
+                            $("input").each(function() {
+
+                                var name = $(this).attr('name');
+
+                                if( rep.error[name] ) {
+                                    $(this).after(errMsg(rep.error[name]))
+                                }
+
+                            });
+
+                        } else {
+
+                            name = params['name'];
+                            email = params['email'];
+                            switchContent('desc');
+                        }
+
+                    });
+                }
+                
+            } else {
+                switchContent('inputs');
+            }
+            
         });
         
     }
+    
     
     function inputs() {
         
@@ -29,20 +106,10 @@
     }
     
     
-    function switchContent(content) {
+    
+    function initFields(done) {
         
-        
-        var switchInner = function(content) {
-            if ( content === 'desc' ) {
-                desc();
-            } else if ( content ==='inputs' ) {
-                inputs();
-            }
-        }
-        
-        if ( !name && !email && !since ) {
-            
-            $.post(STRESSFUL_API, {
+         $.post(STRESSFUL_API, {
                 'profile': true
             }).done(function (data) {
 
@@ -57,93 +124,35 @@
                     email = rep.email;
                     since = rep.since;
                 }
-                
-                switchInner(content);
-
+             
+                if ( done ) {
+                    done();
+                }
+             
             });
+    }
+    
+    
+    function switchContent(content) {
+        
+        switch ( content ) {
             
-        } else {
-            
-            switchInner(content);
+            case 'desc':
+                desc();
+                break;
+            case 'inputs':
+                inputs();
+                break;
         }
         
     }
     
     $(function() {
         
-        $('form').submit(function(event) {
-            event.preventDefault();
-            
-            if ( $('button').html() == 'Save' ) {
-                $(".alert").remove();
-            
-                var inputs = $('input:not(input:password)').filter(function() { return $(this).val() == ""; });
-
-                if(inputs.length > 0) {
-                    inputs.each(function() {
-                        $(this).after(errMsg($(this).attr("placeholder") + " is required")); 
-                        return false;
-                    });
-                }
-
-                var passwords = $("input:password");
-
-                if ($(passwords[0]).val() != "") {
-                    if($(passwords[1]).val() === "")  {
-                        $(passwords[1]).after(errMsg("password confirmation is required")); 
-                    } else if ($(passwords[0]).val() != $(passwords[1]).val()) {
-                       event.preventDefault(); 
-                       $(passwords[1]).after(errMsg("Paswords mismatch"));
-                        return false;
-                    }
-                }
-                
-                var params = {
-                    'profile' : true,
-                    'modify': name, 
-                    'name' : $("input[name='username']").val(),
-                    'email': $("input[name='email']").val()
-                };
-                
-                alert(JSON.stringify(params));
-                
-                if ( $(passwords[0]).val() !== "" ) {
-                    params['password'] = $(passwords[0]).val() 
-                }
-
-                $.post(STRESSFUL_API, params).done(function(data) {
-
-                    if ( LOG_ENABLED ) { alert(data) };
-
-                    var rep = JSON.parse(data);
-
-                    if ( rep.error ) {
-
-                        $("input").each(function() {
-
-                            var name = $(this).attr('name');
-
-                            if( rep.error[name] ) {
-                                $(this).after(errMsg(rep.error[name]))
-                            }
-
-                        });
-
-                    } else {
-                        name = email = since = null;
-                        switchContent('desc');
-                    }
-
-                });
-                
-            } else {
-                switchContent('inputs');
-            }
-            
-            
+        formEvents();
+        initFields(function() {
+           switchContent('desc'); 
         });
-        
-        switchContent('desc');
         
     });
     
