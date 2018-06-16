@@ -13,3 +13,10 @@ INSERT INTO submission (user, category, test, result) VALUES ('b', 'Math', 'Rela
 INSERT INTO submission (user, category, test, result) VALUES ('b', 'Math', 'Relazioni', '100%') ;
 INSERT INTO submission (user, category, test, result) VALUES ('b', 'Ita', 'Proverbi', '100%') ;
 INSERT INTO submission (user, category, test, result) VALUES ('b', 'Math', 'Relazioni', '50%') ;
+INSERT INTO category (name, creator) VALUES ('Music', 'a');
+INSERT INTO submission (user, category, test, result) VALUES ('b', 'Math', 'Relazioni', '100%') ;
+INSERT INTO submission (user, category, test, result) VALUES ('b', 'Ita', 'Grammatica', '66.66666666666666%') ;
+INSERT INTO submission (user, category, test, result) VALUES ('b', 'Ita', 'Grammatica', '66.66666666666666%') ;
+INSERT INTO submission (user, category, test, result) VALUES ('b', 'Ita', 'Grammatica', '66.66666666666666%') ;
+INSERT INTO submission (user, category, test, result) VALUES ('b', 'Ita', 'Grammatica', '66%') ;
+INSERT INTO user (username, email, password) VALUES ('luca96', 'luca@gmail.com', 'ff377aff39a9345a9cca803fb5c5c081');

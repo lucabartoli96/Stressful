@@ -3,11 +3,6 @@
 require_once("/var/www/html/Stressful/resources/config.php");
 require_once('db.php');
 
-$username = "";
-$password = "";
-
-$err = null;
-
 $user = User::get();
 
 if ( !$user->is_logged() ) {

@@ -7,8 +7,6 @@ class User {
     private static $UPDATE = "UPDATE user SET %s='%s' WHERE %s='%s' LIMIT 1";
     private static $SIGNUP = "INSERT INTO user (username, email, password) VALUES ('%s', '%s', '%s')";
     private static $LOGIN = "SELECT * FROM user WHERE username='%s' LIMIT 1";
-    
-    //private static $instance = null;
 
     private $user = null;
     

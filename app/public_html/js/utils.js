@@ -2,7 +2,7 @@
 
 var STRESSFUL_API = "http://localhost/Stressful/resources/library/stressful_api.php";
 
-var LOG_ENABLED = false;
+var LOG_ENABLED = true;
 
 function addHiddenInput(form, name, value) {
 
