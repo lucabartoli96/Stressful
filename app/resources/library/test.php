@@ -115,6 +115,7 @@ class Test {
         if( $user->is_admin() ) {
             
             $db = Connection::get();
+            
             $db->query(sprintf(self::$DELETE, $category, $name));
             
         } else {

@@ -185,7 +185,7 @@
             if (confirm("Are you sure you want to delete " + name + "?")) {
                 
                 var params = {};
-                params[state] = true;
+                params[state] = category || true;
                 params['delete'] = name; 
                 $.post(STRESSFUL_API, params)
                 .done(function(data) {

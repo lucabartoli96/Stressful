@@ -132,12 +132,12 @@ if ( !$user->is_logged() ) {
                         $_POST['mistake'],
                         $_POST['questions']
                     );
+                    
+                    echo '{"added": true}';
 
                 } catch ( TestException $err ) {
                     echo $err->to_json();
                 }
-                
-                echo '{"added": true}';
                 
             } else {
                 $test = Test::get()->getTest($_POST['category'], $_POST['test']);
@@ -150,14 +150,13 @@ if ( !$user->is_logged() ) {
         } else if ( isset($_POST['category']) ) {
             $category = $_POST['category'];
     
-            if ( isset($_POST['delete']) or isset($_POST['modify']) ) {
+            if ( isset($_POST['delete']) ) {
+                
                 try {
 
-                    if ( isset($_POST['delete']) ) {
-                        Test::get()->delete($category, $_POST['delete']);
-                    }  else if( isset($_POST['modify']) ) {
-                        //DO NOTHING
-                    } 
+                    Test::get()->delete($category, $_POST['delete']);
+                    
+                    echo '{"deleted" : true}';
 
                 } catch ( UserException $err ) {
                     echo $err->to_json();
